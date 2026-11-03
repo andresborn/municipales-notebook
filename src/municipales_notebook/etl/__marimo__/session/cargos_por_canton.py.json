@@ -1,0 +1,113 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.25.2",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "242f11a575fb8fdeeba032902828ee03",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"etl-elecciones-municipales-2024-cargos-por-canton\">ETL \u2014 Elecciones municipales 2024: cargos por cant\u00f3n</h1>\n<span class=\"paragraph\">Este notebook lee la hoja <strong>1.20</strong> del c\u00f3mputo municipal del TSE:</span>\n<blockquote>\n<span class=\"paragraph\">Candidaturas electas a regidur\u00edas, sindicaturas y concejal\u00edas en propiedad,\npor sexo, seg\u00fan provincia y cant\u00f3n.</span>\n</blockquote>\n<span class=\"paragraph\">La hoja trae los totales por cant\u00f3n en tres columnas:</span>\n<ul>\n<li><code>B</code>: regidur\u00edas en propiedad.</li>\n<li><code>G</code>: sindicaturas en propiedad.</li>\n<li><code>L</code>: concejal\u00edas en propiedad.</li>\n</ul>\n<span class=\"paragraph\">El resultado es un CSV con una fila por cant\u00f3n:</span>\n<span class=\"paragraph\"><code>provincia, canton, regidurias, sindicaturas, concejales</code></span>\n<span class=\"paragraph\">En 2024 estos totales coinciden con la cantidad de puestos a elegir en cada\ncant\u00f3n, y suman 518 regidur\u00edas, 491 sindicaturas y 1963 concejal\u00edas.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "a5f9f8be10ccd20d89b308db28aefbab",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><marimo-ui-element object-id='MJUe-0' random-id='2ace1e42-6ca3-badf-011d-eeea4cbdd6a5'><marimo-anywidget data-initial-value='{&quot;model_id&quot;:&quot;abf115643c0c49f0ba903244ddcac10d&quot;}' data-label='null' data-model-id='&quot;abf115643c0c49f0ba903244ddcac10d&quot;'></marimo-anywidget></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "18fd2c144603fe4895cfd22be84f78b1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "567f6d6b2fdd5ed50cd2e60397374a6a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "1f4f612270a86684ca2db59208da1770",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "6ec95a84fc01581c807c34327d086d0e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "ba3d87a1f2b6f36ae99f017c26bd8d0d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<div style='display: flex;flex: 1;flex-direction: column;justify-content: flex-start;align-items: normal;flex-wrap: nowrap;gap: 0.5rem'><span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"validacion-ok\">\u2705 Validaci\u00f3n OK</h2></span><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Totales nacionales le\u00eddos de la hoja <code>1.20</code>: <strong>518</strong> regidur\u00edas, <strong>491</strong> sindicaturas y <strong>1963</strong> concejal\u00edas.</span></span><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"resumen-por-provincia\">Resumen por provincia</h3></span><marimo-ui-element object-id='Xref-0' random-id='0f4993d0-306c-3d11-ceeb-12151f4dccbc'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;cantones&#92;&quot;:16,&#92;&quot;regidurias&#92;&quot;:96,&#92;&quot;sindicaturas&#92;&quot;:116,&#92;&quot;concejales&#92;&quot;:464,&#92;&quot;regidurias_esperadas&#92;&quot;:96,&#92;&quot;sindicaturas_esperadas&#92;&quot;:116,&#92;&quot;concejales_esperadas&#92;&quot;:464,&#92;&quot;cantones_esperados&#92;&quot;:16,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;CARTAGO&#92;&quot;,&#92;&quot;cantones&#92;&quot;:8,&#92;&quot;regidurias&#92;&quot;:52,&#92;&quot;sindicaturas&#92;&quot;:53,&#92;&quot;concejales&#92;&quot;:212,&#92;&quot;regidurias_esperadas&#92;&quot;:52,&#92;&quot;sindicaturas_esperadas&#92;&quot;:53,&#92;&quot;concejales_esperadas&#92;&quot;:212,&#92;&quot;cantones_esperados&#92;&quot;:8,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;GUANACASTE&#92;&quot;,&#92;&quot;cantones&#92;&quot;:11,&#92;&quot;regidurias&#92;&quot;:61,&#92;&quot;sindicaturas&#92;&quot;:61,&#92;&quot;concejales&#92;&quot;:244,&#92;&quot;regidurias_esperadas&#92;&quot;:61,&#92;&quot;sindicaturas_esperadas&#92;&quot;:61,&#92;&quot;concejales_esperadas&#92;&quot;:244,&#92;&quot;cantones_esperados&#92;&quot;:11,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;HEREDIA&#92;&quot;,&#92;&quot;cantones&#92;&quot;:10,&#92;&quot;regidurias&#92;&quot;:58,&#92;&quot;sindicaturas&#92;&quot;:48,&#92;&quot;concejales&#92;&quot;:192,&#92;&quot;regidurias_esperadas&#92;&quot;:58,&#92;&quot;sindicaturas_esperadas&#92;&quot;:48,&#92;&quot;concejales_esperadas&#92;&quot;:192,&#92;&quot;cantones_esperados&#92;&quot;:10,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;LIM&#92;&#92;u00d3N&#92;&quot;,&#92;&quot;cantones&#92;&quot;:6,&#92;&quot;regidurias&#92;&quot;:40,&#92;&quot;sindicaturas&#92;&quot;:30,&#92;&quot;concejales&#92;&quot;:119,&#92;&quot;regidurias_esperadas&#92;&quot;:40,&#92;&quot;sindicaturas_esperadas&#92;&quot;:30,&#92;&quot;concejales_esperadas&#92;&quot;:119,&#92;&quot;cantones_esperados&#92;&quot;:6,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;PUNTARENAS&#92;&quot;,&#92;&quot;cantones&#92;&quot;:13,&#92;&quot;regidurias&#92;&quot;:73,&#92;&quot;sindicaturas&#92;&quot;:60,&#92;&quot;concejales&#92;&quot;:240,&#92;&quot;regidurias_esperadas&#92;&quot;:73,&#92;&quot;sindicaturas_esperadas&#92;&quot;:60,&#92;&quot;concejales_esperadas&#92;&quot;:240,&#92;&quot;cantones_esperados&#92;&quot;:13,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;SAN JOS&#92;&#92;u00c9&#92;&quot;,&#92;&quot;cantones&#92;&quot;:20,&#92;&quot;regidurias&#92;&quot;:138,&#92;&quot;sindicaturas&#92;&quot;:123,&#92;&quot;concejales&#92;&quot;:492,&#92;&quot;regidurias_esperadas&#92;&quot;:138,&#92;&quot;sindicaturas_esperadas&#92;&quot;:123,&#92;&quot;concejales_esperadas&#92;&quot;:492,&#92;&quot;cantones_esperados&#92;&quot;:20,&#92;&quot;ok_cantones&#92;&quot;:true,&#92;&quot;ok_regidurias&#92;&quot;:true,&#92;&quot;ok_sindicaturas&#92;&quot;:true,&#92;&quot;ok_concejales&#92;&quot;:true}]&quot;' data-total-rows='7' data-total-columns='13' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-field-types='[[&quot;provincia&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;cantones&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;regidurias&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;sindicaturas&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;concejales&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;regidurias_esperadas&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;sindicaturas_esperadas&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;concejales_esperadas&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;cantones_esperados&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;ok_cantones&quot;,[&quot;boolean&quot;,&quot;bool&quot;]],[&quot;ok_regidurias&quot;,[&quot;boolean&quot;,&quot;bool&quot;]],[&quot;ok_sindicaturas&quot;,[&quot;boolean&quot;,&quot;bool&quot;]],[&quot;ok_concejales&quot;,[&quot;boolean&quot;,&quot;bool&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"chequeos\">Chequeos</h3></span><marimo-ui-element object-id='Xref-1' random-id='907a3339-9d0f-44aa-9fbd-54a3bab9aa71'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Provincias&#92;&quot;,&#92;&quot;esperado&#92;&quot;:7,&#92;&quot;obtenido&#92;&quot;:7,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Cantones&#92;&quot;,&#92;&quot;esperado&#92;&quot;:84,&#92;&quot;obtenido&#92;&quot;:84,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Filas duplicadas&#92;&quot;,&#92;&quot;esperado&#92;&quot;:0,&#92;&quot;obtenido&#92;&quot;:0,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Regidur&#92;&#92;u00edas&#92;&quot;,&#92;&quot;esperado&#92;&quot;:518,&#92;&quot;obtenido&#92;&quot;:518,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Sindicaturas&#92;&quot;,&#92;&quot;esperado&#92;&quot;:491,&#92;&quot;obtenido&#92;&quot;:491,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Concejales&#92;&quot;,&#92;&quot;esperado&#92;&quot;:1963,&#92;&quot;obtenido&#92;&quot;:1963,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Valores nulos&#92;&quot;,&#92;&quot;esperado&#92;&quot;:0,&#92;&quot;obtenido&#92;&quot;:0,&#92;&quot;ok&#92;&quot;:true},{&#92;&quot;chequeo&#92;&quot;:&#92;&quot;Valores negativos o cero&#92;&quot;,&#92;&quot;esperado&#92;&quot;:0,&#92;&quot;obtenido&#92;&quot;:0,&#92;&quot;ok&#92;&quot;:true}]&quot;' data-total-rows='8' data-total-columns='4' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-field-types='[[&quot;chequeo&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;esperado&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;obtenido&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;ok&quot;,[&quot;boolean&quot;,&quot;bool&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element><span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"primeras-filas-del-csv\">Primeras filas del CSV</h3></span><marimo-ui-element object-id='Xref-2' random-id='14bea8c9-9f71-1dc4-4a6a-5f056426532f'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:11,&#92;&quot;sindicaturas&#92;&quot;:14,&#92;&quot;concejales&#92;&quot;:56},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;ATENAS&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:8,&#92;&quot;concejales&#92;&quot;:32},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;GRECIA&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:7,&#92;&quot;sindicaturas&#92;&quot;:7,&#92;&quot;concejales&#92;&quot;:28},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;GUATUSO&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:4,&#92;&quot;concejales&#92;&quot;:16},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;LOS CHILES&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:4,&#92;&quot;concejales&#92;&quot;:16},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;NARANJO&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:8,&#92;&quot;concejales&#92;&quot;:32},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;OROTINA&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:5,&#92;&quot;concejales&#92;&quot;:20},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;PALMARES&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:7,&#92;&quot;concejales&#92;&quot;:28},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;PO&#92;&#92;u00c1S&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:5,&#92;&quot;concejales&#92;&quot;:20},{&#92;&quot;provincia&#92;&quot;:&#92;&quot;ALAJUELA&#92;&quot;,&#92;&quot;canton&#92;&quot;:&#92;&quot;R&#92;&#92;u00cdO CUARTO&#92;&quot;,&#92;&quot;regidurias&#92;&quot;:5,&#92;&quot;sindicaturas&#92;&quot;:3,&#92;&quot;concejales&#92;&quot;:12}]&quot;' data-total-rows='20' data-total-columns='5' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;provincia&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;canton&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;regidurias&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;sindicaturas&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;concejales&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element></div>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "446a12acc4f912e1125c185a061b614f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">CSV guardado en <code>/Users/a/Code/municipales-notebook/src/data/clean/cargos_por_canton_2024.csv</code> con <strong>84 filas</strong>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

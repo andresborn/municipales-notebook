@@ -1,12 +1,41 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
+*.py[cod]
+*.pyo
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
+.venv/
 
-# Virtual environments
-.venv
+# Estado generado por marimo
+**/__marimo__/session/
 
+# Sitio estático y caches
+src/out/
+.observablehq/
+node_modules/
+.deno/
+.vite/
+*.tsbuildinfo
+
+# Tests y caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage/
+
+# Logs y entorno local
+*.log
+.env
+.env.*
+!.env.example
+
+# Sistema y editores
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/

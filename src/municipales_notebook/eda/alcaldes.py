@@ -20,10 +20,9 @@ def _():
 
     import altair as alt
     import marimo as mo
-    import numpy as np
     import pandas as pd
 
-    return Path, alt, mo, np, pd
+    return Path, alt, mo, pd
 
 
 @app.cell(hide_code=True)
@@ -256,69 +255,10 @@ def _(mo):
 
 
 @app.cell(hide_code=True)
-def _(df, np, pd):
-    def resumir_canton(grupo):
-        grupo = grupo.sort_values("votos", ascending=False).reset_index(drop=True)
-        validos = int(grupo["votos"].sum())
-        cuotas = grupo["votos"] / validos
-        primero = grupo.iloc[0]
-        segundo = grupo.iloc[1]
-        margen = int(primero["votos"] - segundo["votos"])
-        return pd.Series(
-            {
-                "validos": validos,
-                "partidos_con_votos": len(grupo),
-                "ganador": primero["partido"],
-                "segundo": segundo["partido"],
-                "votos_ganador": int(primero["votos"]),
-                "votos_segundo": int(segundo["votos"]),
-                "margen_votos": margen,
-                "margen_pp": margen / validos * 100,
-                "cuota_ganador": primero["votos"] / validos * 100,
-                "enp": 1 / (cuotas**2).sum(),
-            }
-        )
+def _(df):
+    from municipales_notebook.lib.alcaldias import resumir_alcaldias
 
-    votos_con_partido = df[df["votos"] > 0]
-    competitividad = (
-        votos_con_partido.groupby(["provincia", "canton"])
-        .apply(resumir_canton, include_groups=False)
-        .reset_index()
-    )
-
-    competitividad["margen_pp"] = competitividad["margen_pp"].round(1)
-    competitividad["swing_pp"] = (competitividad["margen_pp"] / 2).round(1)
-    competitividad["cuota_ganador"] = competitividad["cuota_ganador"].round(1)
-    competitividad["enp"] = competitividad["enp"].round(2)
-
-    competitividad["clasificacion"] = pd.cut(
-        competitividad["margen_pp"],
-        bins=[-np.inf, 5, 10, 20, np.inf],
-        labels=["Muy disputado", "Disputado", "Poco disputado", "Dominado"],
-        right=False,
-    )
-    competitividad = (
-        competitividad[
-            [
-                "provincia",
-                "canton",
-                "clasificacion",
-                "ganador",
-                "segundo",
-                "votos_ganador",
-                "votos_segundo",
-                "margen_votos",
-                "margen_pp",
-                "swing_pp",
-                "cuota_ganador",
-                "enp",
-                "validos",
-                "partidos_con_votos",
-            ]
-        ]
-        .sort_values("margen_pp")
-        .reset_index(drop=True)
-    )
+    competitividad = resumir_alcaldias(df)
     return (competitividad,)
 
 

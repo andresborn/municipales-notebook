@@ -1,12 +1,10 @@
 [project]
 name = "municipales-notebook"
 version = "0.1.0"
-description = "Add your description here"
+description = "Análisis de las elecciones municipales de Costa Rica de 2024"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "deno>=2.9.8",
-    "marimo-studio[deno]>=0.4.1",
     "marimo[recommended]>=0.25.2",
     "openpyxl>=3.1.5",
     "pandas>=3.1.0",

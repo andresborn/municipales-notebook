@@ -62,6 +62,7 @@ uv run marimo edit src/municipales_notebook/eda/regidurias.py
 
 ## Sitio web
 
-La capa de presentación se está rehaciendo con Observable Framework. El notebook
-de marimo queda como entorno de ETL y análisis; el sitio estático se construirá
-en `site/` y se publicará desde `site/dist/`.
+La capa de presentación vive en `site/` y usa React, Vite y Observable Plot. El
+sitio tiene una portada con el contexto nacional y una página aparte para
+consultar los resultados por cantón. El notebook de marimo queda como entorno de
+ETL y análisis; el sitio estático se construye en `site/dist/`.

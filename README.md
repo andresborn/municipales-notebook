@@ -25,26 +25,26 @@ uv sync
 
 Orden de ejecución:
 
-1. `etl/alcaldes.py` genera `alcaldes_2024.csv`.
-2. `etl/regidurias.py` genera `regidurias_2024.csv`.
-3. `etl/cargos_por_canton.py` genera `cargos_por_canton_2024.csv`.
-4. `etl/escanos_regidurias.py` aplica cociente, subcociente y resto, y genera:
+1. `etl/municipal_2024_alcaldes.py` genera `alcaldes_2024.csv`.
+2. `etl/municipal_2024_regidurias_votos.py` genera `regidurias_2024.csv`.
+3. `etl/municipal_2024_cargos.py` genera `cargos_por_canton_2024.csv`.
+4. `etl/municipal_2024_regidurias.py` aplica cociente, subcociente y resto, y genera:
    - `escanos_regidurias_2024.csv`
    - `resumen_regidurias_canton_2024.csv`
    - `resumen_regidurias_partido_2024.csv`
-5. `etl/resumen_alcaldes.py` genera `resumen_alcaldes_canton_2024.csv`.
+5. `etl/municipal_2024_resumen_alcaldes.py` genera `resumen_alcaldes_canton_2024.csv`.
 
 Para abrir un ETL:
 
 ```bash
-uv run marimo edit src/municipales_notebook/etl/resumen_alcaldes.py
+uv run marimo edit src/municipales_notebook/etl/municipal_2024_resumen_alcaldes.py
 ```
 
 Para ejecutarlo sin interfaz:
 
 ```bash
 uv run marimo export session \
-  src/municipales_notebook/etl/resumen_alcaldes.py \
+  src/municipales_notebook/etl/municipal_2024_resumen_alcaldes.py \
   --no-sandbox --force-overwrite
 ```
 

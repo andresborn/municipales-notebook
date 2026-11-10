@@ -13,6 +13,8 @@ def _(mo):
     Cada hoja corresponde a una provincia y contiene los votos por partido
     para alcaldías, desagregados por cantón.
 
+    Los datos se descargan [aquí](https://tse.go.cr/zip/elecciones/computovotos_febrero2024.zip) o pueden buscarse en la [página de estadísticas electorales](https://tse.go.cr/estadisticas_elecciones.html) bajo la sección de "Cómputo de votos".
+
     El resultado es un CSV tidy con las columnas:
 
     `provincia, canton, partido, votos`
@@ -56,6 +58,7 @@ def _(Path):
         / "COMPUTO DE VOTOS MUNICIPALES FEB 2024 FINAL.xlsm"
     )
     RUTA_SALIDA = RAIZ / "src" / "data" / "clean" / "alcaldes_2024.csv"
+
     HOJAS = ["2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8"]
     return HOJAS, RUTA_SALIDA, RUTA_XLSX
 
@@ -64,11 +67,10 @@ def _(Path):
 def _(re):
     # Correcciones puntuales de nombres que vienen con errores en el Excel.
     CORRECCIONES_CANTONES = {
-        "MONTES  DE OCA": "MONTES DE OCA",
-        "MONTES  DE ORO": "MONTES DE ORO",
         "PUERO JIMÉMNEZ": "PUERTO JIMÉNEZ",
     }
 
+    # https://es.wikipedia.org/wiki/Cantones_de_Costa_Rica
     CANTONES_ESPERADOS = {
         "SAN JOSÉ": 20,
         "ALAJUELA": 16,
@@ -80,7 +82,7 @@ def _(re):
     }
 
     def limpiar_texto(valor):
-        """Convierte a texto, colapsa espacios y quita extremos."""
+        """Convierte a texto, colapsa whitespaces y quita extremos."""
         if valor is None:
             return ""
         return re.sub(r"\s+", " ", str(valor)).strip()
@@ -137,6 +139,7 @@ def _(re):
         #    Guardamos pares (índice_de_columna, nombre_normalizado) para
         #    saber después en qué columna está cada cantón.
         cabecera = filas[5]
+
         cantones = []
         for columna, valor in enumerate(cabecera):
             if columna < 2 or valor is None:
@@ -260,23 +263,13 @@ def _(HOJAS, RUTA_XLSX, extraer_hoja, openpyxl, pd):
 
     df = pd.DataFrame(registros)
     df = df[["hoja", "provincia", "canton", "partido", "votos"]]
-
-    resumen_hojas = (
-        df.groupby(["hoja", "provincia"], as_index=False)
-        .agg(
-            cantones=("canton", "nunique"),
-            partidos=("partido", "nunique"),
-            votos=("votos", "sum"),
-        )
-        .reset_index(drop=True)
-    )
-    return df, resumen_hojas
+    return (df,)
 
 
 @app.cell
 def _(CANTONES_ESPERADOS, df, pd):
     resumen_provincia = (
-        df.groupby("provincia", as_index=False)
+        df.groupby(["hoja","provincia"], as_index=False)
         .agg(
             cantones=("canton", "nunique"),
             partidos=("partido", "nunique"),
@@ -300,7 +293,7 @@ def _(CANTONES_ESPERADOS, df, pd):
             },
             {
                 "chequeo": "Cantones",
-                "esperado": 84,
+                "esperado": sum(CANTONES_ESPERADOS.values()),
                 "obtenido": df["canton"].nunique(),
             },
             {
@@ -331,14 +324,12 @@ def _(CANTONES_ESPERADOS, df, pd):
 
 
 @app.cell
-def _(chequeos, df, mo, resumen_hojas, resumen_provincia, validacion_ok):
+def _(chequeos, df, mo, resumen_provincia, validacion_ok):
     estado = "✅ Validación OK" if validacion_ok else "❌ Revisar validación"
 
     mo.vstack(
         [
             mo.md(f"## {estado}"),
-            mo.md("### Resumen por hoja"),
-            mo.ui.table(resumen_hojas),
             mo.md("### Resumen por provincia"),
             mo.ui.table(resumen_provincia),
             mo.md("### Chequeos"),
@@ -359,9 +350,7 @@ def _(RUTA_SALIDA, df, mo, validacion_ok):
             index=False,
             encoding="utf-8",
         )
-        mensaje = mo.md(
-            f"CSV guardado en `{RUTA_SALIDA}` con **{len(df):,} filas**."
-        )
+        mensaje = mo.md(f"CSV guardado en `{RUTA_SALIDA}` con **{len(df):,} filas**.")
     else:
         mensaje = mo.md(
             "No se guardó el CSV porque la validación falló. "

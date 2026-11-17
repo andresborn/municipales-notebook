@@ -541,8 +541,8 @@ def _(asignacion, canton_reg, mo, resumen_canton):
                 f"mayoría **{int(resumen_reg['mayoria'])}**"
             ),
             mo.md(
-                f"Partido con más escaños: **{resumen_reg['partido_mas_escaños']}** "
-                f"({int(resumen_reg['escaños_primero'])}) — {estado_mayoria}."
+                f"Partido con más votos: **{resumen_reg['partido_mas_votos']}** "
+                f"({int(resumen_reg['escaños_primero'])} escaños) — {estado_mayoria}."
             ),
             mo.ui.table(
                 detalle_canton[
@@ -570,7 +570,7 @@ def _(mo, resumen_canton):
             mo.md("### Resumen por cantón"),
             mo.md(
                 "`escaños_asignados` debe coincidir con `regidurias` en los 84 "
-                "cantones. `tiene_mayoria` indica si el partido con más escaños "
+                "cantones. `tiene_mayoria` indica si el partido más votado "
                 "alcanza la mayoría absoluta del concejo."
             ),
             mo.ui.table(resumen_canton, selection=None, show_data_types=False),

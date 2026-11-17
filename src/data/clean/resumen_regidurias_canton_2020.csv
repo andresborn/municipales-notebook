@@ -1,4 +1,4 @@
-provincia,canton,regidurias,votos_validos,cociente,subcociente,partidos_con_escanos,partido_mas_escaños,escaños_primero,escaños_asignados,mayoria,tiene_mayoria
+provincia,canton,regidurias,votos_validos,cociente,subcociente,partidos_con_escanos,partido_mas_votos,escaños_primero,escaños_asignados,mayoria,tiene_mayoria
 ALAJUELA,ALAJUELA,11,62019,5638.09,2819.05,6,LIBERACIÓN NACIONAL,4,11,6,False
 ALAJUELA,ATENAS,5,11454,2290.8,1145.4,4,UNIDAD SOCIAL CRISTIANA,2,5,3,False
 ALAJUELA,GRECIA,7,21682,3097.43,1548.71,6,LIBERACIÓN NACIONAL,2,7,4,False

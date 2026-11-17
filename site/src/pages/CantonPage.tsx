@@ -481,16 +481,16 @@ export function CantonPage() {
           <p>
             {regiduria.tieneMayoria ? (
               <>
-                <strong>{regiduria.partidoMasEscanos}</strong> alcanzó la mayoría
+                <strong>{regiduria.partidoMasVotos}</strong> alcanzó la mayoría
                 absoluta con {regiduria.escanosPrimero} de{" "}
                 {regiduria.regidurias} regidurías.
               </>
             ) : (
               <>
                 Ningún partido alcanzó la mayoría absoluta de{" "}
-                <strong>{regiduria.mayoria} escaños</strong>.{" "}
-                <strong>{regiduria.partidoMasEscanos}</strong> encabeza la
-                asignación con {regiduria.escanosPrimero}.
+                <strong>{regiduria.mayoria} escaños</strong>. El partido más
+                votado fue <strong>{regiduria.partidoMasVotos}</strong>, con{" "}
+                {regiduria.escanosPrimero} de {regiduria.regidurias} regidurías.
               </>
             )}
           </p>

@@ -50,7 +50,12 @@ def _asignar_canton(grupo: pd.DataFrame) -> pd.DataFrame:
 
 
 def _resumir_canton(grupo: pd.DataFrame) -> pd.Series:
-    grupo = grupo.sort_values(["escaños", "votos"], ascending=False)
+    # El partido que encabeza el resumen es el más votado, no el que tiene más
+    # escaños: en muchos cantones varios partidos empatan en el máximo de
+    # escaños, y elegir a uno de ellos escondería el empate.
+    grupo = grupo.sort_values(
+        ["votos", "partido"], ascending=[False, True]
+    )
     regidurias = int(grupo["regidurias"].iloc[0])
     validos = int(grupo["votos"].sum())
     primero = grupo.iloc[0]
@@ -62,7 +67,7 @@ def _resumir_canton(grupo: pd.DataFrame) -> pd.Series:
             "cociente": validos / regidurias,
             "subcociente": validos / (2 * regidurias),
             "partidos_con_escanos": int((grupo["escaños"] > 0).sum()),
-            "partido_mas_escaños": primero["partido"],
+            "partido_mas_votos": primero["partido"],
             "escaños_primero": int(primero["escaños"]),
             "escaños_asignados": int(grupo["escaños"].sum()),
             "mayoria": mayoria,

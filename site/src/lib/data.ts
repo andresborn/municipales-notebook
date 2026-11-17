@@ -42,7 +42,7 @@ export type RegiduriaCantonRow = {
   cociente: number;
   subcociente: number;
   partidosConEscanos: number;
-  partidoMasEscanos: string;
+  partidoMasVotos: string;
   escanosPrimero: number;
   escanosAsignados: number;
   mayoria: number;
@@ -130,7 +130,7 @@ export const regiduriasCanton: RegiduriaCantonRow[] = rows(
   cociente: num(row.cociente),
   subcociente: num(row.subcociente),
   partidosConEscanos: num(row.partidos_con_escanos),
-  partidoMasEscanos: text(row["partido_mas_escaños"]),
+  partidoMasVotos: text(row["partido_mas_votos"]),
   escanosPrimero: num(row["escaños_primero"]),
   escanosAsignados: num(row["escaños_asignados"]),
   mayoria: num(row.mayoria),

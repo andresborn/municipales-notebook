@@ -25,14 +25,14 @@ uv sync
 
 Orden de ejecución:
 
-1. `etl/municipal_2024_alcaldes.py` genera `alcaldes_2024.csv`.
-2. `etl/municipal_2024_regidurias_votos.py` genera `regidurias_2024.csv`.
-3. `etl/municipal_2024_cargos.py` genera `cargos_por_canton_2024.csv`.
-4. `etl/municipal_2024_regidurias.py` aplica cociente, subcociente y resto, y genera:
+1. `etl/2024/municipal_2024_alcaldes.py` genera `alcaldes_2024.csv`.
+2. `etl/2024/municipal_2024_regidurias_votos.py` genera `regidurias_2024.csv`.
+3. `etl/2024/municipal_2024_cargos.py` genera `cargos_por_canton_2024.csv`.
+4. `etl/2024/municipal_2024_regidurias.py` aplica cociente, subcociente y resto, y genera:
    - `escanos_regidurias_2024.csv`
    - `resumen_regidurias_canton_2024.csv`
    - `resumen_regidurias_partido_2024.csv`
-5. `etl/municipal_2024_resumen_alcaldes.py` genera `resumen_alcaldes_canton_2024.csv`.
+5. `etl/2024/municipal_2024_resumen_alcaldes.py` genera `resumen_alcaldes_canton_2024.csv`.
 
 Para abrir un ETL:
 

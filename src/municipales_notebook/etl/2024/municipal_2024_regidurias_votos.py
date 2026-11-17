@@ -60,8 +60,11 @@ def _(Path):
         / "COMPUTO DE VOTOS MUNICIPALES FEB 2024 FINAL.xlsm"
     )
     RUTA_SALIDA = RAIZ / "src" / "data" / "clean" / "regidurias_2024.csv"
+    RUTA_PARTICIPACION = (
+        RAIZ / "src" / "data" / "clean" / "participacion_regidurias_2024.csv"
+    )
     HOJAS = ["3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8"]
-    return HOJAS, RUTA_SALIDA, RUTA_XLSX
+    return HOJAS, RUTA_PARTICIPACION, RUTA_SALIDA, RUTA_XLSX
 
 
 @app.cell
@@ -237,9 +240,130 @@ def _(re):
 
     return (
         CANTONES_ESPERADOS,
+        a_entero,
         extraer_hoja,
         leer_referencia_nacional,
+        limpiar_texto,
+        normalizar_canton,
+        provincia_desde_titulo,
     )
+
+
+@app.cell
+def _(
+    CANTONES_ESPERADOS,
+    HOJAS,
+    RUTA_PARTICIPACION,
+    RUTA_XLSX,
+    a_entero,
+    limpiar_texto,
+    mo,
+    normalizar_canton,
+    openpyxl,
+    pd,
+    provincia_desde_titulo,
+):
+    def extraer_participacion(ws, hoja):
+        """
+        Extrae electorado, votos recibidos y participación por cantón.
+
+        Las hojas de regidurías no traen "PORCENTAJE DE PARTICIPACIÓN", así
+        que la participación se calcula con votos recibidos / electorado.
+        """
+        filas = list(ws.iter_rows(values_only=True))
+        provincia = provincia_desde_titulo(filas[1][0])
+
+        cantones = [
+            (columna, normalizar_canton(valor))
+            for columna, valor in enumerate(filas[5])
+            if columna >= 2 and normalizar_canton(valor)
+        ]
+
+        def fila_de(etiqueta):
+            return filas[
+                next(
+                    i
+                    for i, fila in enumerate(filas)
+                    if limpiar_texto(fila[0]).upper() == etiqueta
+                )
+            ]
+
+        fila_electorado = fila_de("ELECTORADO")
+        fila_recibidos = fila_de("VOTOS RECIBIDOS")
+
+        registros = []
+        for columna, canton in cantones:
+            electorado = a_entero(
+                fila_electorado[columna], f"{hoja}/{canton}/ELECTORADO"
+            )
+            recibidos = a_entero(
+                fila_recibidos[columna], f"{hoja}/{canton}/VOTOS RECIBIDOS"
+            )
+            if electorado <= 0 or recibidos > electorado:
+                raise ValueError(
+                    f"Electorado inválido en {hoja}/{canton}: "
+                    f"electorado={electorado}, recibidos={recibidos}"
+                )
+
+            registros.append(
+                {
+                    "provincia": provincia,
+                    "canton": canton,
+                    "electorado": electorado,
+                    "votos_recibidos": recibidos,
+                    "participacion": recibidos / electorado * 100,
+                }
+            )
+
+        if sum(r["electorado"] for r in registros) != a_entero(fila_electorado[1]):
+            raise ValueError(f"Electorado inconsistente en {hoja}")
+        if sum(r["votos_recibidos"] for r in registros) != a_entero(
+            fila_recibidos[1]
+        ):
+            raise ValueError(f"Votos recibidos inconsistentes en {hoja}")
+
+        return registros
+
+    wb_participacion = openpyxl.load_workbook(
+        RUTA_XLSX, read_only=True, data_only=True
+    )
+    registros_participacion = []
+    for hoja_participacion in HOJAS:
+        registros_participacion.extend(
+            extraer_participacion(
+                wb_participacion[hoja_participacion], hoja_participacion
+            )
+        )
+    wb_participacion.close()
+
+    participacion = pd.DataFrame(registros_participacion)
+    participacion["abstencionismo"] = 100 - participacion["participacion"]
+    participacion["participacion"] = participacion["participacion"].round(2)
+    participacion["abstencionismo"] = participacion["abstencionismo"].round(2)
+
+    if len(participacion) != sum(CANTONES_ESPERADOS.values()):
+        raise ValueError(
+            f"Se esperaban {sum(CANTONES_ESPERADOS.values())} cantones, "
+            f"se obtuvieron {len(participacion)}"
+        )
+
+    RUTA_PARTICIPACION.parent.mkdir(parents=True, exist_ok=True)
+    participacion.to_csv(RUTA_PARTICIPACION, index=False, encoding="utf-8")
+
+    mo.vstack(
+        [
+            mo.md(
+                f"CSV guardado en `{RUTA_PARTICIPACION}` con "
+                f"**{len(participacion)} cantones**."
+            ),
+            mo.ui.table(
+                participacion.head(10),
+                selection=None,
+                show_data_types=False,
+            ),
+        ]
+    )
+    return
 
 
 @app.cell

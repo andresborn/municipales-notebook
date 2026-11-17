@@ -32,6 +32,10 @@ export type AlcaldeRow = {
   enp: number;
   validos: number;
   partidosConVotos: number;
+  electorado: number;
+  votosRecibidos: number;
+  participacion: number;
+  abstencionismo: number;
 };
 
 export type RegiduriaCantonRow = {
@@ -47,6 +51,10 @@ export type RegiduriaCantonRow = {
   escanosAsignados: number;
   mayoria: number;
   tieneMayoria: boolean;
+  electorado: number;
+  votosRecibidos: number;
+  participacion: number;
+  abstencionismo: number;
 };
 
 export type EscanoPartidoRow = {
@@ -104,6 +112,10 @@ export const alcaldes: AlcaldeRow[] = rows(resumenAlcaldesCsv).map((row) => ({
   enp: num(row.enp),
   validos: num(row.validos),
   partidosConVotos: num(row.partidos_con_votos),
+  electorado: num(row.electorado),
+  votosRecibidos: num(row.votos_recibidos),
+  participacion: num(row.participacion),
+  abstencionismo: num(row.abstencionismo),
 }));
 
 export const validosAlcaldesNacional = alcaldes.reduce(
@@ -135,6 +147,10 @@ export const regiduriasCanton: RegiduriaCantonRow[] = rows(
   escanosAsignados: num(row["escaños_asignados"]),
   mayoria: num(row.mayoria),
   tieneMayoria: boolean(row.tiene_mayoria),
+  electorado: num(row.electorado),
+  votosRecibidos: num(row.votos_recibidos),
+  participacion: num(row.participacion),
+  abstencionismo: num(row.abstencionismo),
 }));
 
 export const escanosPartido: EscanoPartidoRow[] = rows(escanosCsv).map(
@@ -163,11 +179,14 @@ export const partidosNacional: PartidoNacionalRow[] = rows(
   porcentajeVotos: num(row.porcentaje_votos),
 }));
 
-/** Totales oficiales de participación de las elecciones municipales de 2024. */
-export const participacionNacional = {
-  electorado: 3_570_807,
-  votosRecibidos: 1_141_935,
-};
+/** Totales nacionales de participación de la elección de alcaldías. */
+export const participacionNacional = alcaldes.reduce(
+  (totals, row) => ({
+    electorado: totals.electorado + row.electorado,
+    votosRecibidos: totals.votosRecibidos + row.votosRecibidos,
+  }),
+  { electorado: 0, votosRecibidos: 0 },
+);
 
 export const alcaldePorCanton = new Map(
   alcaldes.map((row) => [cantonKey(row), row]),

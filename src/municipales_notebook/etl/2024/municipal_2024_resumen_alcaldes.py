@@ -48,15 +48,36 @@ def _(Path):
     RUTA_RESUMEN = (
         RAIZ / "src" / "data" / "clean" / "resumen_alcaldes_canton_2024.csv"
     )
-    return RUTA_RESUMEN, RUTA_VOTOS
+    RUTA_PARTICIPACION = (
+        RAIZ / "src" / "data" / "clean" / "participacion_alcaldes_2024.csv"
+    )
+    return RUTA_PARTICIPACION, RUTA_RESUMEN, RUTA_VOTOS
 
 
 @app.cell
-def _(RUTA_VOTOS, pd, resumir_alcaldias):
+def _(RUTA_PARTICIPACION, RUTA_VOTOS, pd, resumir_alcaldias):
     votos = pd.read_csv(RUTA_VOTOS)
+    participacion_canton = pd.read_csv(RUTA_PARTICIPACION)
+
     resumen = resumir_alcaldias(votos)
 
-    resumen_export = resumen.copy()
+    # La participación es un dato del cantón, no del partido: se agrega una
+    # sola vez por cantón, al final del resumen.
+    resumen_export = resumen.merge(
+        participacion_canton[
+            [
+                "provincia",
+                "canton",
+                "electorado",
+                "votos_recibidos",
+                "participacion",
+                "abstencionismo",
+            ]
+        ],
+        on=["provincia", "canton"],
+        how="left",
+        validate="one_to_one",
+    )
     for columna in ("margen_pp", "swing_pp", "cuota_ganador"):
         resumen_export[columna] = resumen_export[columna].round(1)
     resumen_export["enp"] = resumen_export["enp"].round(2)
@@ -96,6 +117,11 @@ def _(mo, pd, resumen_export, votos):
                 "chequeo": "Cantones con segundo lugar",
                 "esperado": 84,
                 "obtenido": int(resumen_export["segundo"].notna().sum()),
+            },
+            {
+                "chequeo": "Cantones con participación",
+                "esperado": 84,
+                "obtenido": int(resumen_export["abstencionismo"].notna().sum()),
             },
         ]
     )

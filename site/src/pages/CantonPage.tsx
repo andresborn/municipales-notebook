@@ -203,8 +203,9 @@ export function CantonPage() {
           <p>
             <strong>Solo votos válidos.</strong> Los porcentajes de la tabla de
             regidurías se calculan sobre los votos válidos emitidos. La
-            participación y el abstencionismo corresponden a la elección de
-            alcaldías y se calculan sobre el electorado inscrito.
+            participación y el abstencionismo se calculan sobre el electorado
+            inscrito y se muestran por separado para alcaldía y regiduría,
+            porque son papeletas distintas.
           </p>
         </div>
 
@@ -319,6 +320,29 @@ export function CantonPage() {
           </article>
         </div>
 
+        <div className="metric-group">
+          <h4>Participación en la papeleta de alcaldía</h4>
+          <div className="metric-grid">
+            <article className="metric-card">
+              <p className="metric-label">Electorado</p>
+              <p className="metric-value">{fmtInt(alcalde.electorado)}</p>
+              <p className="metric-note">personas inscritas</p>
+            </article>
+            <article className="metric-card">
+              <p className="metric-label">Participación</p>
+              <p className="metric-value">{fmtPct(alcalde.participacion)}</p>
+              <p className="metric-note">
+                {fmtInt(alcalde.votosRecibidos)} votos recibidos
+              </p>
+            </article>
+            <article className="metric-card">
+              <p className="metric-label">Abstencionismo</p>
+              <p className="metric-value">{fmtPct(alcalde.abstencionismo)}</p>
+              <p className="metric-note">del electorado inscrito</p>
+            </article>
+          </div>
+        </div>
+
         <details className="indicator-guide">
           <summary>
             <span className="summary-title">
@@ -370,6 +394,28 @@ export function CantonPage() {
               <dd>
                 Total de votos válidos para la alcaldía en el cantón. Es la base
                 de todos los porcentajes y márgenes de esta sección.
+              </dd>
+            </div>
+            <div>
+              <dt>Electorado</dt>
+              <dd>
+                Personas inscritas en el padrón del cantón para las elecciones
+                municipales.
+              </dd>
+            </div>
+            <div>
+              <dt>Participación</dt>
+              <dd>
+                Porcentaje del electorado inscrito que emitió un voto en la
+                papeleta de alcaldía. Incluye votos válidos y no válidos.
+              </dd>
+            </div>
+            <div>
+              <dt>Abstencionismo</dt>
+              <dd>
+                Porcentaje del electorado inscrito que no votó. Es el complemento
+                de la participación y se calcula sobre el electorado, no sobre
+                los votos emitidos.
               </dd>
             </div>
             <div>
@@ -521,6 +567,18 @@ export function CantonPage() {
                 Escaños necesarios para mayoría absoluta en el concejo
               </span>
               <strong>{regiduria.mayoria}</strong>
+            </li>
+            <li>
+              <span className="indicator-label">
+                Participación en la papeleta de regidurías
+              </span>
+              <strong>{fmtPct(regiduria.participacion)}</strong>
+            </li>
+            <li>
+              <span className="indicator-label">
+                Abstencionismo en la papeleta de regidurías
+              </span>
+              <strong>{fmtPct(regiduria.abstencionismo)}</strong>
             </li>
           </ul>
 

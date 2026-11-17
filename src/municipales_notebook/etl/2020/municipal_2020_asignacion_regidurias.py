@@ -63,9 +63,13 @@ def _(Path):
     RUTA_RESUMEN_PARTIDO = (
         RAIZ / "src" / "data" / "clean" / "resumen_regidurias_partido_2020.csv"
     )
+    RUTA_PARTICIPACION = (
+        RAIZ / "src" / "data" / "clean" / "participacion_regidurias_2020.csv"
+    )
     return (
         RUTA_CARGOS,
         RUTA_ESCANOS,
+        RUTA_PARTICIPACION,
         RUTA_RESUMEN_CANTON,
         RUTA_RESUMEN_PARTIDO,
         RUTA_VOTOS,
@@ -73,9 +77,10 @@ def _(Path):
 
 
 @app.cell
-def _(RUTA_CARGOS, RUTA_VOTOS, asignar_regidurias, pd):
+def _(RUTA_CARGOS, RUTA_PARTICIPACION, RUTA_VOTOS, asignar_regidurias, pd):
     votos = pd.read_csv(RUTA_VOTOS)
     cargos = pd.read_csv(RUTA_CARGOS)
+    participacion_canton = pd.read_csv(RUTA_PARTICIPACION)
 
     asignacion, resumen_canton, resumen_partido = asignar_regidurias(
         votos, cargos
@@ -91,6 +96,24 @@ def _(RUTA_CARGOS, RUTA_VOTOS, asignar_regidurias, pd):
     resumen_canton_export["subcociente"] = resumen_canton_export[
         "subcociente"
     ].round(2)
+
+    # La participación es un dato del cantón: se agrega al resumen cantonal,
+    # no a la tabla de escaños por partido.
+    resumen_canton_export = resumen_canton_export.merge(
+        participacion_canton[
+            [
+                "provincia",
+                "canton",
+                "electorado",
+                "votos_recibidos",
+                "participacion",
+                "abstencionismo",
+            ]
+        ],
+        on=["provincia", "canton"],
+        how="left",
+        validate="one_to_one",
+    )
 
     resumen_partido_export = resumen_partido[
         resumen_partido["escaños"] > 0
@@ -140,6 +163,13 @@ def _(asignacion, pd, resumen_canton_export):
                 "chequeo": "Partidos con escaños",
                 "esperado": 63,
                 "obtenido": partidos_con_escanos,
+            },
+            {
+                "chequeo": "Cantones con participación",
+                "esperado": 82,
+                "obtenido": int(
+                    resumen_canton_export["abstencionismo"].notna().sum()
+                ),
             },
             {
                 "chequeo": "Filas duplicadas",

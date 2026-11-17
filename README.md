@@ -1,12 +1,13 @@
-# Municipales 2024
+# Municipales Costa Rica
 
-Análisis de las elecciones municipales de Costa Rica de febrero 2024.
+Análisis de las elecciones municipales de Costa Rica de 2020 y 2024.
 
 ## Estructura
 
 - `src/data/raw/`: archivos originales del TSE.
 - `src/data/clean/`: CSV limpios generados por los ETL.
-- `src/municipales_notebook/etl/`: notebooks que leen los Excel y exportan CSV.
+- `src/municipales_notebook/etl/2024/`: notebooks que leen el Excel de 2024 y exportan CSV.
+- `src/municipales_notebook/etl/2020/`: notebooks que leen el Excel de 2020 y exportan CSV.
 - `src/municipales_notebook/eda/`: notebooks de análisis exploratorio.
 - `src/municipales_notebook/lib/`: funciones de cálculo compartidas.
 
@@ -23,28 +24,47 @@ uv sync
 
 ## ETL
 
+### 2024
+
 Orden de ejecución:
 
 1. `etl/2024/municipal_2024_alcaldes.py` genera `alcaldes_2024.csv`.
 2. `etl/2024/municipal_2024_regidurias_votos.py` genera `regidurias_2024.csv`.
 3. `etl/2024/municipal_2024_cargos.py` genera `cargos_por_canton_2024.csv`.
-4. `etl/2024/municipal_2024_regidurias.py` aplica cociente, subcociente y resto, y genera:
+4. `etl/2024/municipal_2024_asignacion_regidurias.py` aplica cociente, subcociente y resto, y genera:
    - `escanos_regidurias_2024.csv`
    - `resumen_regidurias_canton_2024.csv`
    - `resumen_regidurias_partido_2024.csv`
 5. `etl/2024/municipal_2024_resumen_alcaldes.py` genera `resumen_alcaldes_canton_2024.csv`.
 
+### 2020
+
+Mismo orden, leyendo `COMPUTO DE VOTOS MUNICIPALES FEB 2020.xlsm`:
+
+1. `etl/2020/municipal_2020_alcaldes.py` genera `alcaldes_2020.csv`.
+2. `etl/2020/municipal_2020_regidurias_votos.py` genera `regidurias_2020.csv`.
+3. `etl/2020/municipal_2020_cargos.py` genera `cargos_por_canton_2020.csv`.
+4. `etl/2020/municipal_2020_asignacion_regidurias.py` genera:
+   - `escanos_regidurias_2020.csv`
+   - `resumen_regidurias_canton_2020.csv`
+   - `resumen_regidurias_partido_2020.csv`
+5. `etl/2020/municipal_2020_resumen_alcaldes.py` genera `resumen_alcaldes_canton_2020.csv`.
+
+En 2020 el país tenía 82 cantones: Monteverde y Puerto Jiménez se crearon
+después (leyes 10019 y 10195), así que Puntarenas suma 11 cantones en lugar de
+13.
+
 Para abrir un ETL:
 
 ```bash
-uv run marimo edit src/municipales_notebook/etl/municipal_2024_resumen_alcaldes.py
+uv run marimo edit src/municipales_notebook/etl/2024/municipal_2024_resumen_alcaldes.py
 ```
 
 Para ejecutarlo sin interfaz:
 
 ```bash
 uv run marimo export session \
-  src/municipales_notebook/etl/municipal_2024_resumen_alcaldes.py \
+  src/municipales_notebook/etl/2024/municipal_2024_resumen_alcaldes.py \
   --no-sandbox --force-overwrite
 ```
 

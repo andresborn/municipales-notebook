@@ -5,6 +5,11 @@ type ElectionStat = {
   label: string;
 };
 
+type ElectionCta = {
+  label: string;
+  href: string;
+};
+
 type ElectionCardProps = {
   category: string;
   status: string;
@@ -14,6 +19,7 @@ type ElectionCardProps = {
   stats: ElectionStat[];
   href: string;
   cta: string;
+  secondaryCta?: ElectionCta;
   soon?: boolean;
 };
 
@@ -26,10 +32,11 @@ export function ElectionCard({
   stats,
   href,
   cta,
+  secondaryCta,
   soon = false,
 }: ElectionCardProps) {
   return (
-    <a className={`ecard${soon ? " ecard--soon" : ""}`} href={href}>
+    <article className={`ecard${soon ? " ecard--soon" : ""}`}>
       <div className="ecard-top">
         <span>{category}</span>
         <span className="status">{status}</span>
@@ -45,10 +52,18 @@ export function ElectionCard({
           </div>
         ))}
       </div>
-      <span className="ecard-cta">
-        {cta}
-        <ArrowIcon />
-      </span>
-    </a>
+      <div className="ecard-ctas">
+        <a className="ecard-cta" href={href}>
+          {cta}
+          <ArrowIcon />
+        </a>
+        {secondaryCta ? (
+          <a className="ecard-cta" href={secondaryCta.href}>
+            {secondaryCta.label}
+            <ArrowIcon />
+          </a>
+        ) : null}
+      </div>
+    </article>
   );
 }

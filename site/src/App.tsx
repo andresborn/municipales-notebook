@@ -12,7 +12,7 @@ const renderRoute = (route: Route) => {
     case "landing":
       return <LandingPage />;
     case "home":
-      return <HomePage year={route.year} />;
+      return <HomePage key={route.year} year={route.year} />;
     case "cantones":
       return <CantonPage year={route.year} cantonSlug={route.cantonSlug} />;
     case "soon":

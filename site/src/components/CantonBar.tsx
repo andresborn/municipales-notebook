@@ -1,5 +1,6 @@
 import type { CantonOption, ElectionYear } from "../lib/data";
-import { href, type CantonLink } from "../lib/routes";
+import { type CantonLink } from "../lib/routes";
+import { Brand } from "./Brand";
 import { CantonSelect } from "./CantonSelect";
 import { YearSwitch } from "./YearSwitch";
 
@@ -26,18 +27,12 @@ export function CantonBar({
           role="group"
           aria-label={`Estás viendo Costa Rica, elecciones municipales ${year}`}
         >
-          <a className="bar-brand" href={href.landing()}>
-            Elecciones <span>Costa Rica</span>
-          </a>
+          <Brand />
           <span className="path-country">Costa Rica</span>
           <span className="sep path-sep" aria-hidden="true">
             |
           </span>
           <span className="path-election">Municipal</span>
-          <span className="sep path-sep" aria-hidden="true">
-            |
-          </span>
-          <span className="path-year">{year}</span>
         </div>
         <div className="canton-bar-actions">
           <YearSwitch

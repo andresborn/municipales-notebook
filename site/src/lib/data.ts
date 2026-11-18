@@ -113,16 +113,28 @@ export type AlcaldiasPartidoRow = {
   votos: number;
 };
 
+export type PartidoAlcaldiaNacionalRow = {
+  partido: string;
+  votos: number;
+  porcentajeVotos: number;
+  cantonesConVotos: number;
+  alcaldias: number;
+  porcentajeAlcaldias: number;
+};
+
 export type ElectionData = {
   year: ElectionYear;
   alcaldes: AlcaldeRow[];
   validosAlcaldesNacional: number;
   alcaldesPartido: AlcaldePartidoRow[];
   alcaldiasPorPartido: AlcaldiasPartidoRow[];
+  partidosAlcaldiaNacional: PartidoAlcaldiaNacionalRow[];
   partidosConAlcaldias: number;
   regiduriasCanton: RegiduriaCantonRow[];
   escanosPartido: EscanoPartidoRow[];
   partidosNacional: PartidoNacionalRow[];
+  validosRegiduriasNacional: number;
+  partidosRegiduriaNacional: PartidoNacionalRow[];
   participacionNacional: {
     electorado: number;
     votosRecibidos: number;
@@ -287,6 +299,57 @@ const buildElection = (year: ElectionYear): ElectionData => {
     porcentajeVotos: num(row.porcentaje_votos),
   }));
 
+  const validosRegiduriasNacional = regiduriasCanton.reduce(
+    (total, row) => total + row.votosValidos,
+    0,
+  );
+
+  const totalEscanosNacional = partidosNacional.reduce(
+    (total, row) => total + row.escanos,
+    0,
+  );
+
+  const votosRegiduriaPorPartido = new Map<
+    string,
+    { votos: number; escanos: number }
+  >();
+
+  for (const row of escanosPartido) {
+    if (row.votos <= 0) continue;
+
+    const current = votosRegiduriaPorPartido.get(row.partido) ?? {
+      votos: 0,
+      escanos: 0,
+    };
+
+    current.votos += row.votos;
+    current.escanos += row.escanos;
+    votosRegiduriaPorPartido.set(row.partido, current);
+  }
+
+  const partidosRegiduriaNacional: PartidoNacionalRow[] = [
+    ...votosRegiduriaPorPartido.entries(),
+  ]
+    .map(([partido, row]) => ({
+      partido,
+      votos: row.votos,
+      escanos: row.escanos,
+      porcentajeEscanos:
+        totalEscanosNacional > 0
+          ? (row.escanos / totalEscanosNacional) * 100
+          : 0,
+      porcentajeVotos:
+        validosRegiduriasNacional > 0
+          ? (row.votos / validosRegiduriasNacional) * 100
+          : 0,
+    }))
+    .sort(
+      (a, b) =>
+        b.votos - a.votos ||
+        b.escanos - a.escanos ||
+        a.partido.localeCompare(b.partido, "es"),
+    );
+
   /** Totales nacionales de participación de la elección de alcaldías. */
   const participacionNacional = alcaldes.reduce(
     (totals, row) => ({
@@ -358,16 +421,58 @@ const buildElection = (year: ElectionYear): ElectionData => {
     ]),
   );
 
+  const alcaldiasGanadas = new Map(
+    alcaldiasPorPartido.map((row) => [row.partido, row.cantones]),
+  );
+
+  const votosPorPartido = new Map<
+    string,
+    { votos: number; cantones: Set<string>; alcaldias: number }
+  >();
+
+  for (const row of alcaldesPartido) {
+    const current = votosPorPartido.get(row.partido) ?? {
+      votos: 0,
+      cantones: new Set<string>(),
+      alcaldias: alcaldiasGanadas.get(row.partido) ?? 0,
+    };
+
+    current.votos += row.votos;
+    current.cantones.add(cantonKey(row));
+    votosPorPartido.set(row.partido, current);
+  }
+
+  const partidosAlcaldiaNacional: PartidoAlcaldiaNacionalRow[] = [
+    ...votosPorPartido.entries(),
+  ]
+    .map(([partido, row]) => ({
+      partido,
+      votos: row.votos,
+      porcentajeVotos: (row.votos / validosAlcaldesNacional) * 100,
+      cantonesConVotos: row.cantones.size,
+      alcaldias: row.alcaldias,
+      porcentajeAlcaldias: (row.alcaldias / cantones.length) * 100,
+    }))
+    .sort(
+      (a, b) =>
+        b.votos - a.votos ||
+        b.alcaldias - a.alcaldias ||
+        a.partido.localeCompare(b.partido, "es"),
+    );
+
   return {
     year,
     alcaldes,
     validosAlcaldesNacional,
     alcaldesPartido,
     alcaldiasPorPartido,
+    partidosAlcaldiaNacional,
     partidosConAlcaldias: alcaldiasPorPartido.length,
     regiduriasCanton,
     escanosPartido,
     partidosNacional,
+    validosRegiduriasNacional,
+    partidosRegiduriaNacional,
     participacionNacional,
     alcaldePorCanton,
     alcaldesPartidoPorCanton,

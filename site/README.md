@@ -27,7 +27,7 @@ El build queda en `site/dist/`.
 - `src/pages/CantonPage.tsx`: ficha por cantón.
 - `src/pages/SoonPage.tsx`: módulo nacional 2026 en preparación.
 - `src/components/`: encabezado, pie, selector de cantón, barras, mapa de
-  cuadros, cuadrícula de escaños y tarjetas.
+  cuadros, cuadrícula de escaños, tiras de regidurías por cantón y tarjetas.
 - `src/lib/data.ts`: carga y deriva los datos de ambos años.
 - `src/lib/parties.ts`: nombres y colores de partidos.
 - `src/lib/format.ts`: formato de números, porcentajes y puntos porcentuales.
@@ -37,6 +37,8 @@ El build queda en `site/dist/`.
 
 - `#/`: portada.
 - `#/2020` y `#/2024`: resumen nacional.
+- `#/2020/cantones` y `#/2024/cantones`: ficha del cantón por defecto
+  (San José).
 - `#/2020/cantones/:provincia/:canton` y
   `#/2024/cantones/:provincia/:canton`: ficha del cantón.
 - `#/2026`: módulo nacional en preparación.
@@ -59,6 +61,10 @@ donde `{año}` es `2020` o `2024`. En 2020 hay 82 cantones: Monteverde y Puerto
 Jiménez se crearon después, así que solo aparecen en 2024. Si se abre una ficha
 de esos cantones en 2020, el sitio muestra un aviso y conserva el enlace para
 volver al cantón al cambiar a 2024.
+
+Además, `src/lib/data.ts` deriva los votos totales de cada partido en las
+papeletas de alcaldía y regidurías, y los cruza con las alcaldías y regidurías
+ganadas. Esos totales se calculan en el sitio; no requieren un CSV adicional.
 
 ## Presentación
 

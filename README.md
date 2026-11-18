@@ -98,6 +98,8 @@ Páginas:
 
 - Portada: `#/`.
 - Resumen nacional: `#/2020` y `#/2024`.
+- Ficha del cantón por defecto (San José): `#/2020/cantones` y
+  `#/2024/cantones`.
 - Ficha por cantón: `#/2020/cantones/:provincia/:canton` y
   `#/2024/cantones/:provincia/:canton`.
 - Módulo nacional 2026 en preparación: `#/2026`.

@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { CantonSeatStrips } from "../components/CantonSeatStrips";
 import { PartyBars, type PartyBarRow } from "../components/PartyBars";
 import { SeatGrid } from "../components/SeatGrid";
 import { SiteFooter } from "../components/SiteFooter";
@@ -11,7 +12,6 @@ import { fmtDecimal, fmtInt, fmtPct, fmtPp } from "../lib/format";
 import {
   displayName,
   displayParty,
-  hasOwnColor,
   partyClass,
 } from "../lib/parties";
 import { href } from "../lib/routes";
@@ -22,6 +22,8 @@ type HomePageProps = {
 
 export function HomePage({ year }: HomePageProps) {
   const data = elections[year];
+  const [showAllAlcaldias, setShowAllAlcaldias] = useState(false);
+  const [showAllRegidurias, setShowAllRegidurias] = useState(false);
 
   const totalRegidurias = data.regiduriasCanton.reduce(
     (total, row) => total + row.regidurias,
@@ -38,32 +40,20 @@ export function HomePage({ year }: HomePageProps) {
   const votosNoValidos =
     data.participacionNacional.votosRecibidos - data.validosAlcaldesNacional;
 
-  const alcaldiasColoreadas = data.alcaldiasPorPartido.filter((row) =>
-    hasOwnColor(row.partido),
+  const alcaldiaBars: PartyBarRow[] = data.partidosAlcaldiaNacional.map(
+    (row) => ({
+      key: row.partido,
+      label: displayParty(row.partido),
+      partido: row.partido,
+      value: row.votos,
+      note: fmtPct(row.porcentajeVotos, 2),
+      aside: `${fmtInt(row.alcaldias)} ${
+        row.alcaldias === 1 ? "alcaldía" : "alcaldías"
+      }`,
+    }),
   );
-  const otrosCantones = data.alcaldiasPorPartido
-    .filter((row) => !hasOwnColor(row.partido))
-    .reduce((total, row) => total + row.cantones, 0);
 
-  const alcaldiaBars: PartyBarRow[] = alcaldiasColoreadas.map((row) => ({
-    key: row.partido,
-    label: displayParty(row.partido),
-    partido: row.partido,
-    value: row.cantones,
-    note: "cantones",
-  }));
-
-  if (otrosCantones > 0) {
-    alcaldiaBars.push({
-      key: "otros",
-      label: "Otros partidos",
-      partido: "OTROS PARTIDOS",
-      value: otrosCantones,
-      note: "cantones",
-    });
-  }
-
-  const alcaldiaMax = Math.max(...alcaldiaBars.map((row) => row.value), 1);
+  const alcaldiaMax = data.partidosAlcaldiaNacional[0]?.votos ?? 1;
 
   const regidurias = [...data.partidosNacional].sort(
     (a, b) => b.escanos - a.escanos || b.votos - a.votos,
@@ -72,32 +62,21 @@ export function HomePage({ year }: HomePageProps) {
     (total, row) => total + row.escanos,
     0,
   );
-  const topRegidurias = regidurias.slice(0, 10);
-  const restoRegidurias = regidurias.slice(10);
-  const restoEscanos = restoRegidurias.reduce(
-    (total, row) => total + row.escanos,
-    0,
+
+  const regiduriaBars: PartyBarRow[] = data.partidosRegiduriaNacional.map(
+    (row) => ({
+      key: row.partido,
+      label: displayParty(row.partido),
+      partido: row.partido,
+      value: row.votos,
+      note: fmtPct(row.porcentajeVotos, 2),
+      aside: `${fmtInt(row.escanos)} ${
+        row.escanos === 1 ? "regiduría" : "regidurías"
+      }`,
+    }),
   );
 
-  const regiduriaBars: PartyBarRow[] = topRegidurias.map((row) => ({
-    key: row.partido,
-    label: displayParty(row.partido),
-    partido: row.partido,
-    value: row.escanos,
-    note: fmtPct(row.porcentajeEscanos, 2),
-  }));
-
-  if (restoRegidurias.length > 0) {
-    regiduriaBars.push({
-      key: "resto",
-      label: `Resto (${restoRegidurias.length} partidos)`,
-      partido: "OTROS PARTIDOS",
-      value: restoEscanos,
-      note: fmtPct((restoEscanos / totalEscanos) * 100, 2),
-    });
-  }
-
-  const regiduriaMax = regidurias[0]?.escanos ?? 1;
+  const regiduriaMax = data.partidosRegiduriaNacional[0]?.votos ?? 1;
 
   useEffect(() => {
     document.title = `Resultados municipales ${year} · Elecciones Costa Rica`;
@@ -105,7 +84,7 @@ export function HomePage({ year }: HomePageProps) {
 
   return (
     <>
-      <SiteHeader currentYear={year} />
+      <SiteHeader />
       <main id="main" tabIndex={-1}>
         <div className="wrap page-body">
           <header className="election-head">
@@ -174,7 +153,9 @@ export function HomePage({ year }: HomePageProps) {
             <div className="stat">
               <p className="stat-label">Votos válidos</p>
               <p className="stat-value">{fmtInt(data.validosAlcaldesNacional)}</p>
-              <p className="stat-note">Base de cálculo de alcaldías y márgenes.</p>
+              <p className="stat-note">
+                Base de cálculo de alcaldías, márgenes y porcentajes de votos.
+              </p>
             </div>
             <div className="stat">
               <p className="stat-label">Regidurías</p>
@@ -246,42 +227,79 @@ export function HomePage({ year }: HomePageProps) {
           >
             <figure className="figure">
               <figcaption className="figure-head">
-                <p className="kicker">Alcaldías</p>
-                <h2 id="alcaldias-heading">Alcaldías ganadas por partido</h2>
+                <p className="kicker">Votación · Alcaldía</p>
+                <h2 id="alcaldias-heading">Votos y alcaldías por partido</h2>
                 <p className="figure-sub">
-                  Cantones ganados por cada partido en {year}. Los partidos sin
-                  color propio se agrupan en «Otros partidos».
+                  Votos válidos obtenidos por cada partido en los{" "}
+                  {data.cantones.length} cantones. El porcentaje se calcula
+                  sobre los {fmtInt(data.validosAlcaldesNacional)} votos válidos
+                  a alcaldía. Los votos y el porcentaje aparecen dentro de la
+                  barra; las alcaldías ganadas, fuera.
                 </p>
               </figcaption>
 
-              <PartyBars
-                rows={alcaldiaBars}
-                max={alcaldiaMax}
-                unit="cantones"
-              />
+              <div className="bar-toolbar">
+                <p>
+                  {showAllAlcaldias
+                    ? `Mostrando los ${alcaldiaBars.length} partidos`
+                    : `Mostrando 10 de ${alcaldiaBars.length} partidos`}
+                </p>
+                <button
+                  type="button"
+                  className="bar-expand"
+                  aria-expanded={showAllAlcaldias}
+                  aria-controls="alcaldias-bars"
+                  onClick={() => setShowAllAlcaldias((value) => !value)}
+                >
+                  {showAllAlcaldias
+                    ? "Ver solo los 10 primeros"
+                    : `Ver los ${alcaldiaBars.length} partidos`}
+                </button>
+              </div>
+
+              <div id="alcaldias-bars">
+                <PartyBars
+                  rows={
+                    showAllAlcaldias ? alcaldiaBars : alcaldiaBars.slice(0, 10)
+                  }
+                  max={alcaldiaMax}
+                  unit="votos"
+                  inlineValue
+                />
+              </div>
 
               <details className="disclosure">
                 <summary>
-                  Ver los {data.partidosConAlcaldias} partidos con alcaldías
+                  Ver la tabla de los {data.partidosAlcaldiaNacional.length}{" "}
+                  partidos
                 </summary>
                 <div className="table-wrap">
                   <table>
                     <caption className="sr-only">
-                      Alcaldías ganadas por partido en {year}
+                      Votos y alcaldías por partido en {year}
                     </caption>
                     <thead>
                       <tr>
                         <th scope="col">Partido</th>
                         <th scope="col" className="num">
-                          Cantones
+                          Votos
                         </th>
                         <th scope="col" className="num">
-                          Votos del ganador
+                          % votos
+                        </th>
+                        <th scope="col" className="num">
+                          Cantones con votos
+                        </th>
+                        <th scope="col" className="num">
+                          Alcaldías
+                        </th>
+                        <th scope="col" className="num">
+                          % de cantones
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data.alcaldiasPorPartido.map((row) => (
+                      {data.partidosAlcaldiaNacional.map((row) => (
                         <tr key={row.partido}>
                           <th scope="row">
                             <span
@@ -290,8 +308,15 @@ export function HomePage({ year }: HomePageProps) {
                             />
                             {displayParty(row.partido)}
                           </th>
-                          <td className="num">{row.cantones}</td>
                           <td className="num">{fmtInt(row.votos)}</td>
+                          <td className="num">
+                            {fmtPct(row.porcentajeVotos, 2)}
+                          </td>
+                          <td className="num">{row.cantonesConVotos}</td>
+                          <td className="num strong">{row.alcaldias}</td>
+                          <td className="num">
+                            {fmtPct(row.porcentajeAlcaldias, 2)}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -299,9 +324,16 @@ export function HomePage({ year }: HomePageProps) {
                 </div>
               </details>
 
+              <p className="figure-note">
+                Cada alcaldía se decide en su cantón; por eso el porcentaje de
+                votos y la cantidad de alcaldías miden cosas distintas. No todos
+                los partidos presentan candidaturas en todos los cantones:
+                «Cantones con votos» indica en cuántos cantones recibió votos
+                cada partido.
+              </p>
               <p className="source">
-                Fuente: TSE · Resumen de alcaldías por cantón. Los votos son los
-                del partido ganador en cada cantón.
+                Fuente: TSE · Cómputo de votos para alcaldías y resumen de
+                alcaldías por cantón.
               </p>
             </figure>
           </section>
@@ -313,31 +345,72 @@ export function HomePage({ year }: HomePageProps) {
           >
             <figure className="figure">
               <figcaption className="figure-head">
-                <p className="kicker">Regidurías</p>
-                <h2 id="regidurias-heading">Regidurías por partido</h2>
+                <p className="kicker">Votación · Regidurías</p>
+                <h2 id="regidurias-heading">Votos y regidurías por partido</h2>
                 <p className="figure-sub">
-                  Escaños asignados por cociente, subcociente y resto en los{" "}
-                  {data.cantones.length} cantones. Los porcentajes se calculan
-                  sobre el total de regidurías.
+                  Votos válidos obtenidos por cada partido y regidurías
+                  asignadas por cociente, subcociente y resto en los{" "}
+                  {data.cantones.length} cantones. El porcentaje se calcula
+                  sobre los {fmtInt(data.validosRegiduriasNacional)} votos
+                  válidos a regidurías. Los votos y el porcentaje aparecen
+                  dentro de la barra; las regidurías, fuera.
                 </p>
               </figcaption>
 
-              <PartyBars
-                rows={regiduriaBars}
-                max={regiduriaMax}
-                unit="regidurías"
+              <div className="bar-toolbar">
+                <p>
+                  {showAllRegidurias
+                    ? `Mostrando los ${regiduriaBars.length} partidos`
+                    : `Mostrando 10 de ${regiduriaBars.length} partidos`}
+                </p>
+                <button
+                  type="button"
+                  className="bar-expand"
+                  aria-expanded={showAllRegidurias}
+                  aria-controls="regidurias-bars"
+                  onClick={() => setShowAllRegidurias((value) => !value)}
+                >
+                  {showAllRegidurias
+                    ? "Ver solo los 10 primeros"
+                    : `Ver los ${regiduriaBars.length} partidos`}
+                </button>
+              </div>
+
+              <div id="regidurias-bars">
+                <PartyBars
+                  rows={
+                    showAllRegidurias
+                      ? regiduriaBars
+                      : regiduriaBars.slice(0, 10)
+                  }
+                  max={regiduriaMax}
+                  unit="votos"
+                  inlineValue
+                />
+              </div>
+
+              <SeatGrid
+                rows={regidurias}
+                total={totalEscanos}
+                cantones={data.cantones}
+                escanosPorCanton={data.escanosPorCanton}
               />
 
-              <SeatGrid rows={regidurias} total={totalEscanos} />
+              <CantonSeatStrips
+                year={year}
+                cantones={data.cantones}
+                escanosPorCanton={data.escanosPorCanton}
+              />
 
               <details className="disclosure">
                 <summary>
-                  Ver los {regidurias.length} partidos con regidurías
+                  Ver la tabla de los {data.partidosRegiduriaNacional.length}{" "}
+                  partidos
                 </summary>
                 <div className="table-wrap">
                   <table>
                     <caption className="sr-only">
-                      Regidurías por partido en {year}
+                      Votos y regidurías por partido en {year}
                     </caption>
                     <thead>
                       <tr>
@@ -346,18 +419,18 @@ export function HomePage({ year }: HomePageProps) {
                           Votos
                         </th>
                         <th scope="col" className="num">
-                          Escaños
+                          Regidurías
                         </th>
                         <th scope="col" className="num">
                           % votos
                         </th>
                         <th scope="col" className="num">
-                          % escaños
+                          % regidurías
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {regidurias.map((row) => (
+                      {data.partidosRegiduriaNacional.map((row) => (
                         <tr key={row.partido}>
                           <th scope="row">
                             <span
@@ -382,12 +455,13 @@ export function HomePage({ year }: HomePageProps) {
               </details>
 
               <p className="figure-note">
-                La tabla incluye los {regidurias.length} partidos que obtuvieron
-                al menos una regiduría. Los escaños se asignan por cantón, no en
-                una circunscripción nacional.
+                La tabla incluye los {data.partidosRegiduriaNacional.length}{" "}
+                partidos que recibieron al menos un voto. Las regidurías se
+                asignan por cantón, no en una circunscripción nacional.
               </p>
               <p className="source">
-                Fuente: TSE · Asignación de regidurías por cantón.
+                Fuente: TSE · Cómputo de votos y asignación de regidurías por
+                cantón.
               </p>
             </figure>
           </section>

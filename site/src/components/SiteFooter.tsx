@@ -1,13 +1,12 @@
 import { href } from "../lib/routes";
+import { Brand } from "./Brand";
 
 export function SiteFooter() {
   return (
     <footer className="site-foot">
       <div className="wrap site-foot-inner">
         <div>
-          <a className="brand" href={href.landing()}>
-            Elecciones <span>Costa Rica</span>
-          </a>
+          <Brand />
           <p className="mt-16">
             Resultados de las elecciones de Costa Rica. Fuente: Tribunal Supremo
             de Elecciones (TSE).

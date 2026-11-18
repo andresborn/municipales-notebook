@@ -3,9 +3,22 @@ import { useEffect } from "react";
 import { ElectionCard } from "../components/ElectionCard";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
-import { elections, type ElectionData } from "../lib/data";
+import {
+  defaultCantonKey,
+  elections,
+  type ElectionData,
+  type ElectionYear,
+} from "../lib/data";
 import { fmtInt, fmtPct } from "../lib/format";
 import { href } from "../lib/routes";
+
+const defaultCanton = (year: ElectionYear) => {
+  const data = elections[year];
+  return (
+    data.cantones.find((canton) => canton.key === defaultCantonKey) ??
+    data.cantones[0]
+  );
+};
 
 const statsFor = (data: ElectionData) => ({
   cantones: data.cantones.length,
@@ -33,16 +46,16 @@ export function LandingPage() {
       <main id="main" tabIndex={-1}>
         <section className="hero hero--solo wrap">
           <div>
-            <p className="kicker">Costa Rica · Elecciones 2020–2026</p>
             <h1>
               Elecciones en Costa Rica
               <br />
               2020–2026.
             </h1>
             <p className="deck">
-              Resultados de las elecciones municipales de 2020 y 2024, cantón
-              por cantón. El módulo de las elecciones nacionales de 2026 está en
-              preparación.
+              Esta página provee visualizaciones de los resultados de las
+              elecciones municipales de 2020 y 2024 en Costa Rica. Incluye
+              resúmenes a nivel nacional y cantonal de las alcaldías y
+              regidurías electas.
             </p>
           </div>
         </section>
@@ -56,10 +69,6 @@ export function LandingPage() {
             <div>
               <p className="kicker">Resultados oficiales</p>
               <h2 id="elecciones-heading">Elige una elección</h2>
-              <p className="deck">
-                Resumen nacional y ficha por cantón, con la misma estructura en
-                cada año.
-              </p>
             </div>
             <p className="section-head-side">Datos del TSE</p>
           </div>
@@ -83,7 +92,11 @@ export function LandingPage() {
                 },
               ]}
               href={href.home(2024)}
-              cta="Ver resultados"
+              cta="Ver resumen nacional"
+              secondaryCta={{
+                label: "Ver resultados por cantón",
+                href: href.cantones(2024, defaultCanton(2024)),
+              }}
             />
 
             <ElectionCard
@@ -104,7 +117,11 @@ export function LandingPage() {
                 },
               ]}
               href={href.home(2020)}
-              cta="Ver resultados"
+              cta="Ver resumen nacional"
+              secondaryCta={{
+                label: "Ver resultados por cantón",
+                href: href.cantones(2020, defaultCanton(2020)),
+              }}
             />
 
             <ElectionCard
@@ -134,7 +151,7 @@ export function LandingPage() {
             <p className="kicker">Metodología</p>
             <h2 id="metodologia-heading">Cómo se calculan los resultados</h2>
           </div>
-          <div>
+          <div className="method-copy">
             <p>
               Los porcentajes de votación y los márgenes se calculan sobre{" "}
               <strong>votos válidos</strong>. La participación y el
@@ -148,15 +165,10 @@ export function LandingPage() {
             </p>
             <p>
               Fuente:{" "}
-              <a
-                href="https://www.tse.go.cr"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="https://www.tse.go.cr" target="_blank" rel="noreferrer">
                 Tribunal Supremo de Elecciones (TSE)
               </a>
-              . Los resultados de 2026 se incorporarán cuando estén
-              disponibles.
+              . Los resultados de 2026 se incorporarán cuando estén disponibles.
             </p>
           </div>
         </section>

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { CantonSeatStrips } from "../components/CantonSeatStrips";
 import { PartyBars, type PartyBarRow } from "../components/PartyBars";
-import { SeatGrid } from "../components/SeatGrid";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteHeader } from "../components/SiteHeader";
 import { TileMap } from "../components/TileMap";
@@ -54,14 +53,6 @@ export function HomePage({ year }: HomePageProps) {
   );
 
   const alcaldiaMax = data.partidosAlcaldiaNacional[0]?.votos ?? 1;
-
-  const regidurias = [...data.partidosNacional].sort(
-    (a, b) => b.escanos - a.escanos || b.votos - a.votos,
-  );
-  const totalEscanos = regidurias.reduce(
-    (total, row) => total + row.escanos,
-    0,
-  );
 
   const regiduriaBars: PartyBarRow[] = data.partidosRegiduriaNacional.map(
     (row) => ({
@@ -388,13 +379,6 @@ export function HomePage({ year }: HomePageProps) {
                   inlineValue
                 />
               </div>
-
-              <SeatGrid
-                rows={regidurias}
-                total={totalEscanos}
-                cantones={data.cantones}
-                escanosPorCanton={data.escanosPorCanton}
-              />
 
               <CantonSeatStrips
                 year={year}

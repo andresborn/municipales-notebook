@@ -1671,6 +1671,22 @@ details.disclosure .table-wrap {
   line-height: 0.92;
 }
 
+.canton-classification {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.canton-classification-note {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .canton-hero .deck {
   max-width: 50ch;
   margin-top: 18px;

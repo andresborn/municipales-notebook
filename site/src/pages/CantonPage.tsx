@@ -23,6 +23,28 @@ type CantonPageProps = {
 const ppLabel = (value: number, votes: number) =>
   votes > 0 && value < 0.1 ? "<0,1 pp" : fmtPp(value);
 
+const CLASSIFICATION_INFO: Record<
+  string,
+  { className: string; threshold: string }
+> = {
+  "Muy disputado": {
+    className: "badge--hot",
+    threshold: "Margen menor a 5 pp",
+  },
+  Disputado: {
+    className: "badge--dark",
+    threshold: "Margen entre 5 y 10 pp",
+  },
+  "Poco disputado": {
+    className: "badge--soft",
+    threshold: "Margen entre 10 y 20 pp",
+  },
+  Dominado: {
+    className: "",
+    threshold: "Margen de 20 pp o más",
+  },
+};
+
 export function CantonPage({ year, cantonSlug }: CantonPageProps) {
   const data = elections[year];
   const otherYear: ElectionYear = year === 2020 ? 2024 : 2020;
@@ -108,12 +130,13 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
   const shareOfValid = (votos: number) =>
     alcalde.validos > 0 ? (votos / alcalde.validos) * 100 : 0;
 
+  const classification = CLASSIFICATION_INFO[alcalde.clasificacion] ?? {
+    className: "",
+    threshold: "",
+  };
+
   const winnerShare = shareOfValid(alcalde.votosGanador);
   const secondShare = shareOfValid(alcalde.votosSegundo);
-  const secondBarWidth =
-    alcalde.votosGanador > 0
-      ? Math.max(1.2, (alcalde.votosSegundo / alcalde.votosGanador) * 100)
-      : 1.2;
 
   const topParties = partidos.slice(0, 10);
   const restParties = partidos.slice(10);
@@ -202,6 +225,22 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                   Provincia de {displayName(selectedCanton.provincia)}
                 </p>
                 <h1>{displayName(selectedCanton.canton)}</h1>
+                <p className="canton-classification">
+                  <span
+                    className={`badge${
+                      classification.className
+                        ? ` ${classification.className}`
+                        : ""
+                    }`}
+                  >
+                    {alcalde.clasificacion}
+                  </span>
+                  {classification.threshold ? (
+                    <span className="canton-classification-note">
+                      {classification.threshold}
+                    </span>
+                  ) : null}
+                </p>
                 <p className="deck">
                   Con {fmtInt(alcalde.validos)} votos válidos,{" "}
                   <strong>{displayParty(alcalde.ganador)}</strong> ganó la
@@ -239,11 +278,10 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                     </p>
                   </div>
                   <div className="duel-bar">
-                    <i style={{ width: "100%" }} />
+                    <i style={{ width: `${winnerShare}%` }} />
                   </div>
                   <p className="duel-foot">
                     <span>{fmtPct(winnerShare, 2)} de los votos válidos</span>
-                    <b>1.º</b>
                   </p>
                 </div>
 
@@ -259,11 +297,10 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                     </p>
                   </div>
                   <div className="duel-bar">
-                    <i style={{ width: `${secondBarWidth}%` }} />
+                    <i style={{ width: `${secondShare}%` }} />
                   </div>
                   <p className="duel-foot">
                     <span>{fmtPct(secondShare, 2)} de los votos válidos</span>
-                    <b>2.º</b>
                   </p>
                 </div>
 
@@ -735,6 +772,14 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                 <dd>
                   Diferencia entre el primero y el segundo lugar, en votos y en
                   puntos porcentuales.
+                </dd>
+              </div>
+              <div>
+                <dt>Competitividad</dt>
+                <dd>
+                  Clasificación según el margen del ganador: muy disputado
+                  (menos de 5 pp), disputado (5 a 10 pp), poco disputado (10 a
+                  20 pp) y dominado (20 pp o más).
                 </dd>
               </div>
               <div>

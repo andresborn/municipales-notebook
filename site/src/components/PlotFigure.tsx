@@ -31,7 +31,7 @@ export function PlotFigure({
         width,
         style: {
           background: "transparent",
-          color: "var(--text)",
+          color: "var(--ink)",
           ...customStyle,
         },
       });

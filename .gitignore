@@ -9,6 +9,8 @@ wheels/
 *.egg-info/
 .venv/
 
+/prototype
+
 # Estado generado por marimo
 **/__marimo__/session/
 

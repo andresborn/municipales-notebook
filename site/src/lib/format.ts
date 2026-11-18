@@ -1,21 +1,14 @@
-const integerFormat = new Intl.NumberFormat("es-CR", {
+const integerFormat = new Intl.NumberFormat("es-ES", {
   maximumFractionDigits: 0,
 });
 
 const decimalFormat = (digits: number) =>
-  new Intl.NumberFormat("es-CR", {
+  new Intl.NumberFormat("es-ES", {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   });
 
-const percentFormat = (digits: number) =>
-  new Intl.NumberFormat("es-CR", {
-    style: "percent",
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits,
-  });
-
-const compactFormat = new Intl.NumberFormat("es-CR", {
+const compactFormat = new Intl.NumberFormat("es-ES", {
   notation: "compact",
   compactDisplay: "long",
   maximumFractionDigits: 1,
@@ -28,7 +21,7 @@ export const fmtDecimal = (value: number, digits = 2) =>
 
 /** Formats a value already expressed in percentage points (0–100). */
 export const fmtPct = (value: number, digits = 1) =>
-  percentFormat(digits).format(value / 100);
+  `${decimalFormat(digits).format(value)}%`;
 
 /** Formats a value already expressed in percentage points, with a pp suffix. */
 export const fmtPp = (value: number, digits = 1) =>

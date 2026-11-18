@@ -147,19 +147,18 @@ export function CantonSelect({ options, value, onChange }: CantonSelectProps) {
       <button
         type="button"
         className="select-trigger"
-        aria-label="Seleccionar cantón"
+        aria-label={
+          selected
+            ? `Seleccionar cantón (actual: ${selected.canton})`
+            : "Seleccionar cantón"
+        }
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls="canton-listbox"
         onClick={toggle}
       >
         <span className="select-value">
-          <span className="select-canton">
-            {selected?.canton ?? "Seleccione un cantón"}
-          </span>
-          <span className="select-province">
-            {selected?.provincia ?? "Costa Rica"}
-          </span>
+          {selected?.canton ?? "Seleccione un cantón"}
         </span>
         <Chevron open={open} />
       </button>

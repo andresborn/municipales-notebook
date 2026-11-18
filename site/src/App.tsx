@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
 
+import { routeFromHash, type Route } from "./lib/routes";
 import { CantonPage } from "./pages/CantonPage";
 import { HomePage } from "./pages/HomePage";
+import { LandingPage } from "./pages/LandingPage";
+import { SoonPage } from "./pages/SoonPage";
 import "./App.css";
 
-type Route = "home" | "cantones";
-
-const routeFromHash = (): Route =>
-  window.location.hash.replace(/^#/, "").startsWith("/cantones")
-    ? "cantones"
-    : "home";
+const renderRoute = (route: Route) => {
+  switch (route.page) {
+    case "landing":
+      return <LandingPage />;
+    case "home":
+      return <HomePage year={route.year} />;
+    case "cantones":
+      return <CantonPage year={route.year} cantonSlug={route.cantonSlug} />;
+    case "soon":
+      return <SoonPage />;
+  }
+};
 
 export default function App() {
   const [route, setRoute] = useState<Route>(routeFromHash);
@@ -24,5 +33,21 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  return route === "cantones" ? <CantonPage /> : <HomePage />;
+  return (
+    <>
+      <a
+        className="skip-link"
+        href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          const main = document.getElementById("main");
+          main?.focus();
+          main?.scrollIntoView({ block: "start" });
+        }}
+      >
+        Saltar al contenido
+      </a>
+      {renderRoute(route)}
+    </>
+  );
 }

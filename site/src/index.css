@@ -1,75 +1,57 @@
 :root {
-  --bg: #f8f9fb;
-  --surface: #ffffff;
-  --surface-muted: #f3f5f8;
-  --text: #334155;
-  --text-strong: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --accent: #4269d0;
-  --accent-strong: #2f4fa8;
-  --accent-soft: #eef2fb;
-  --accent-border: #c7d5f4;
-  --winner: #4269d0;
-  --runner: #a8b3c7;
-  --success: #0f766e;
-  --success-soft: #ecfdf5;
-  --warning: #b45309;
-  --warning-soft: #fffbeb;
-  --danger: #b91c1c;
-  --danger-soft: #fef2f2;
-  --shadow:
-    0 1px 2px rgb(15 23 42 / 4%), 0 12px 32px rgb(15 23 42 / 5%);
-  --sans:
-    "Inter", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --mono: "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+  --paper: #ffffff;
+  --wash: #f5f4f0;
+  --wash-2: #eeede8;
+  --ink: #101010;
+  --ink-soft: #383838;
+  --muted: #6d6d6d;
+  --faint: #9b9b9b;
+  --rule: #e4e2dd;
+  --rule-strong: #c9c6bf;
+  --accent: #ff2700;
+  --accent-dark: #d31f00;
+  --accent-text: #d61f00;
 
-  color-scheme: light dark;
-  font-family: var(--sans);
+  --pln: #177a4d;
+  --pusc: #1e6fb2;
+  --up: #e2552c;
+  --pac: #c62828;
+  --png: #6f5aa8;
+  --plp: #f07d24;
+  --pnr: #1f9b8e;
+  --psd: #3aa9e0;
+  --prsc: #8a5a3b;
+  --fa: #f2c200;
+  --otro: #918e88;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --page-w: min(1180px, 100% - 48px);
+
+  color-scheme: light;
+  font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--ink);
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1115;
-    --surface: #161a21;
-    --surface-muted: #1c222b;
-    --text: #cbd5e1;
-    --text-strong: #f8fafc;
-    --muted: #94a3b8;
-    --border: #2a3340;
-    --border-strong: #3b4656;
-    --accent: #7da2f7;
-    --accent-strong: #a8c0ff;
-    --accent-soft: #18233d;
-    --accent-border: #2c4475;
-    --runner: #64748b;
-    --success: #5eead4;
-    --success-soft: #102a2a;
-    --warning: #fbbf24;
-    --warning-soft: #2a2110;
-    --danger: #fca5a5;
-    --danger-soft: #2a1515;
-    --shadow:
-      0 1px 2px rgb(0 0 0 / 30%), 0 12px 32px rgb(0 0 0 / 25%);
-  }
-}
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   min-width: 320px;
-  background: var(--bg);
+  background: var(--paper);
+  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -77,25 +59,52 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100svh;
-  background: var(--bg);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
 }
 
 #root {
   min-height: 100svh;
 }
 
-button,
-input {
-  font: inherit;
-}
-
-button {
-  color: inherit;
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+figcaption,
+dl,
+dd {
+  margin: 0;
 }
 
 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
   color: var(--accent);
-  text-underline-offset: 2px;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
 }
 
 abbr[title] {
@@ -105,8 +114,22 @@ abbr[title] {
 }
 
 ::selection {
-  background: var(--accent-soft);
-  color: var(--text-strong);
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.wrap {
+  width: var(--page-w);
+  margin-inline: auto;
 }
 
 .sr-only {
@@ -119,4 +142,13 @@ abbr[title] {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
 }

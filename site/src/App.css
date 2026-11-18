@@ -210,8 +210,8 @@
 }
 
 .btn--light:hover {
-  border-color: var(--ink);
-  background: var(--ink);
+  border-color: var(--accent);
+  background: var(--accent);
   color: #fff;
 }
 

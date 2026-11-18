@@ -112,14 +112,14 @@ export function LandingPage() {
               status="En preparación"
               year="2026"
               title="Elecciones nacionales"
-              description="Presidencial y 57 diputaciones. El módulo se incorporará cuando los resultados estén disponibles."
+              description="Presidencial, 57 diputaciones y participación. El módulo se incorporará cuando los resultados estén disponibles."
               stats={[
                 { value: "57", label: "diputaciones" },
                 { value: "7", label: "provincias" },
                 { value: "84", label: "cantones" },
               ]}
               href={href.soon()}
-              cta="Ver el módulo"
+              cta="Ver el alcance"
               soon
             />
           </div>

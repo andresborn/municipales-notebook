@@ -1,6 +1,7 @@
-# Municipales Costa Rica
+# Elecciones Costa Rica
 
-Análisis de las elecciones municipales de Costa Rica de 2020 y 2024.
+Datos y sitio web de las elecciones municipales de Costa Rica de 2020 y 2024,
+con un módulo nacional 2026 en preparación.
 
 ## Estructura
 
@@ -10,6 +11,7 @@ Análisis de las elecciones municipales de Costa Rica de 2020 y 2024.
 - `src/municipales_notebook/etl/2020/`: notebooks que leen el Excel de 2020 y exportan CSV.
 - `src/municipales_notebook/eda/`: notebooks de análisis exploratorio.
 - `src/municipales_notebook/lib/`: funciones de cálculo compartidas.
+- `site/`: sitio web estático en React y Vite.
 
 ## Requisitos
 
@@ -88,8 +90,38 @@ uv run marimo edit src/municipales_notebook/eda/regidurias.py
 
 ## Sitio web
 
-La capa de presentación vive en `site/` y usa React, Vite y Observable Plot. El
-sitio tiene una portada con el contexto nacional y una página aparte para
-consultar los resultados por cantón, con un selector de año para alternar entre
-las elecciones de 2020 y 2024. El notebook de marimo queda como entorno de ETL y
-análisis; el sitio estático se construye en `site/dist/`.
+La capa de presentación vive en `site/` y usa React y Vite. Las visualizaciones
+se dibujan con CSS y HTML; `@observablehq/plot` queda instalado como opción y
+hay un componente inactivo para reactivarlo si se necesita.
+
+Páginas:
+
+- Portada: `#/`.
+- Resumen nacional: `#/2020` y `#/2024`.
+- Ficha por cantón: `#/2020/cantones/:provincia/:canton` y
+  `#/2024/cantones/:provincia/:canton`.
+- Módulo nacional 2026 en preparación: `#/2026`.
+
+El resumen nacional incluye participación, alcaldías, regidurías, mapa de
+cantones y tabla completa. La ficha por cantón incluye alcaldía, composición del
+concejo, participación por papeleta y glosario. En 2020 hay 82 cantones; en 2024,
+84, tras la creación de Monteverde y Puerto Jiménez. El módulo de 2026 no muestra
+cifras simuladas: se incorporará cuando existan resultados oficiales.
+
+Para desarrollar:
+
+```bash
+cd site
+npm install
+npm run dev
+```
+
+Para construir:
+
+```bash
+cd site
+npm run build
+```
+
+El sitio estático se genera en `site/dist/`. El notebook de marimo queda como
+entorno de ETL y análisis.

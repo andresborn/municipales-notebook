@@ -13,7 +13,7 @@ export type Route =
 export const DEFAULT_YEAR: ElectionYear = 2024;
 export const SOON_YEAR = 2026;
 
-type CantonLink = Pick<CantonOption, "slugProvincia" | "slugCanton">;
+export type CantonLink = Pick<CantonOption, "slugProvincia" | "slugCanton">;
 
 export const href = {
   landing: () => "#/",

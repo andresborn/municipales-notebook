@@ -1,5 +1,5 @@
 import type { CantonOption, ElectionYear } from "../lib/data";
-import { href } from "../lib/routes";
+import { href, type CantonLink } from "../lib/routes";
 import { CantonSelect } from "./CantonSelect";
 import { YearSwitch } from "./YearSwitch";
 
@@ -8,7 +8,7 @@ type CantonBarProps = {
   cantones: CantonOption[];
   selected: CantonOption;
   onSelect: (key: string) => void;
-  cantonForSwitch?: CantonOption;
+  cantonByYear?: Partial<Record<ElectionYear, CantonLink>>;
 };
 
 export function CantonBar({
@@ -16,7 +16,7 @@ export function CantonBar({
   cantones,
   selected,
   onSelect,
-  cantonForSwitch,
+  cantonByYear,
 }: CantonBarProps) {
   return (
     <header className="canton-bar">
@@ -42,7 +42,8 @@ export function CantonBar({
           <YearSwitch
             year={year}
             mode="cantones"
-            canton={cantonForSwitch ?? selected}
+            canton={selected}
+            cantonByYear={cantonByYear}
           />
           <span className="select-label" aria-hidden="true">
             Cantón

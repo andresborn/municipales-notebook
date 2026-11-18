@@ -403,8 +403,7 @@ export function HomePage({ year }: HomePageProps) {
                 <h2 id="mapa-heading">Cada cuadro es un cantón</h2>
                 <p className="deck">
                   El color indica el partido que ganó la alcaldía en {year}.
-                  Pasa el cursor sobre un cuadro para ver el cantón, el partido
-                  y el margen.
+                  Selecciona un cuadro para abrir la ficha del cantón.
                 </p>
               </div>
               <p className="section-head-side">
@@ -434,7 +433,7 @@ export function HomePage({ year }: HomePageProps) {
                 </h2>
                 <p className="deck">
                   Alcaldía ganada, votos del ganador, margen y participación en
-                  la papeleta de alcaldía.
+                  la papeleta de alcaldía. Cada nombre abre la ficha del cantón.
                 </p>
               </div>
               <p className="section-head-side">Fuente: TSE</p>

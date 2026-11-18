@@ -457,6 +457,11 @@
   margin-top: 46px;
 }
 
+/* Contenedor de Observable Plot, solo se usa si se reactiva PlotPartyVotes. */
+.plot {
+  margin-top: 26px;
+}
+
 .figure--flush {
   margin-top: 26px;
 }
@@ -859,6 +864,12 @@
   background: var(--ink);
 }
 
+.legend .legend-win {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+}
+
 /* --------------------------------------------------------------------------
    Participación
    -------------------------------------------------------------------------- */
@@ -1015,7 +1026,7 @@
 }
 
 .seat-legend-row .s {
-  width: 46px;
+  width: 64px;
   color: var(--muted);
   font-size: 11px;
   text-align: right;
@@ -1145,6 +1156,16 @@ tbody td {
 tbody th {
   font-weight: 700;
   text-align: left;
+}
+
+tbody th a,
+tbody td a {
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+tbody th a:hover,
+tbody td a:hover {
+  border-bottom-color: var(--accent);
 }
 
 tbody tr:hover {
@@ -1412,6 +1433,29 @@ details.disclosure .table-wrap {
   padding-top: 36px;
 }
 
+.canton-page .section {
+  padding-top: 0;
+}
+
+.canton-fallback-note {
+  margin: 0 0 24px;
+  padding: 13px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--wash);
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.canton-fallback-note b {
+  color: var(--ink);
+}
+
+.canton-hero .election-head-top {
+  margin-bottom: 24px;
+}
+
 .canton-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -1576,6 +1620,10 @@ details.disclosure .table-wrap {
   padding: 14px 14px 15px 0;
 }
 
+.canton-stats .stat:first-child {
+  padding-left: 14px;
+}
+
 .canton-stats .stat:not(:first-child) {
   padding-left: 14px;
 }
@@ -1688,6 +1736,38 @@ details.disclosure .table-wrap {
 .participation-table td:not(:first-child),
 .participation-table th:not(:first-child) {
   text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   Glosario
+   -------------------------------------------------------------------------- */
+.glossary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 28px;
+  border: 1px solid var(--rule);
+  background: var(--rule);
+}
+
+.glossary > div {
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.glossary dt {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.glossary dd {
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 /* --------------------------------------------------------------------------
@@ -1994,6 +2074,10 @@ details.disclosure .table-wrap {
   --c: var(--fa);
 }
 
+.p-juntos {
+  --c: var(--juntos);
+}
+
 .p-otro {
   --c: var(--otro);
 }
@@ -2220,6 +2304,10 @@ details.disclosure .table-wrap {
   }
 
   .threshold-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .glossary {
     grid-template-columns: 1fr;
   }
 

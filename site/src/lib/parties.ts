@@ -4,8 +4,8 @@ export type PartySwatch = {
 };
 
 /**
- * Paleta fija para los partidos que compiten en todo el país. Cualquier otro
- * partido (sobre todo los locales) usa el gris de "otros".
+ * Paleta fija para los partidos con color propio. Cualquier otro partido,
+ * sobre todo los locales, usa el gris de "otros".
  */
 const PARTY_SWATCHES: Record<string, PartySwatch> = {
   "LIBERACIÓN NACIONAL": { className: "p-pln", color: "var(--pln)" },
@@ -18,6 +18,7 @@ const PARTY_SWATCHES: Record<string, PartySwatch> = {
   "PROGRESO SOCIAL DEMOCRÁTICO": { className: "p-psd", color: "var(--psd)" },
   "REPUBLICANO SOCIAL CRISTIANO": { className: "p-prsc", color: "var(--prsc)" },
   "FRENTE AMPLIO": { className: "p-fa", color: "var(--fa)" },
+  "JUNTOS SAN JOSÉ": { className: "p-juntos", color: "var(--juntos)" },
 };
 
 const OTHER_SWATCH: PartySwatch = {

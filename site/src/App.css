@@ -297,6 +297,24 @@
   gap: 20px;
 }
 
+.election-title-link {
+  margin-top: 16px;
+}
+
+.head-link {
+  gap: 7px;
+  padding-bottom: 2px;
+  border-bottom-width: 1px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.head-link svg {
+  width: 12px;
+  height: 12px;
+}
+
 .crumbs {
   display: flex;
   flex-wrap: wrap;
@@ -2283,6 +2301,66 @@ details.disclosure .table-wrap {
 
 .p-juntos {
   --c: var(--juntos);
+}
+
+.p-nuestro-pueblo {
+  --c: var(--nuestro-pueblo);
+}
+
+.p-actuemos-ya {
+  --c: var(--actuemos-ya);
+}
+
+.p-aqui-costa-rica-manda {
+  --c: var(--aqui-costa-rica-manda);
+}
+
+.p-justicia-social {
+  --c: var(--justicia-social);
+}
+
+.p-agenda-democratica {
+  --c: var(--agenda-democratica);
+}
+
+.p-gran-nicoya {
+  --c: var(--gran-nicoya);
+}
+
+.p-renovemos-alajuela {
+  --c: var(--renovemos-alajuela);
+}
+
+.p-union-guanacasteca {
+  --c: var(--union-guanacasteca);
+}
+
+.p-progreser {
+  --c: var(--progreser);
+}
+
+.p-somos-moravia {
+  --c: var(--somos-moravia);
+}
+
+.p-restauracion-nacional {
+  --c: var(--restauracion-nacional);
+}
+
+.p-alianza-democrata {
+  --c: var(--alianza-democrata);
+}
+
+.p-integracion-nacional {
+  --c: var(--integracion-nacional);
+}
+
+.p-comunal-unido {
+  --c: var(--comunal-unido);
+}
+
+.p-recuperando-valores {
+  --c: var(--recuperando-valores);
 }
 
 .p-otro {

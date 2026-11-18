@@ -18,6 +18,7 @@ type CantonSeatStripsProps = {
   year: ElectionYear;
   cantones: CantonOption[];
   escanosPorCanton: Map<string, EscanoPartidoRow[]>;
+  defaultOpen?: boolean;
 };
 
 const seatLabel = (value: number) =>
@@ -27,6 +28,7 @@ export function CantonSeatStrips({
   year,
   cantones,
   escanosPorCanton,
+  defaultOpen = false,
 }: CantonSeatStripsProps) {
   const groups = useMemo(() => {
     const map = new Map<string, CantonOption[]>();
@@ -68,7 +70,10 @@ export function CantonSeatStrips({
   }, [escanosPorCanton]);
 
   return (
-    <details className="disclosure canton-seat-disclosure">
+    <details
+      className="disclosure canton-seat-disclosure"
+      open={defaultOpen || undefined}
+    >
       <summary>Ver regidurías por cantón</summary>
 
       <div className="canton-seat-content">

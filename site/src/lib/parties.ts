@@ -19,6 +19,57 @@ const PARTY_SWATCHES: Record<string, PartySwatch> = {
   "REPUBLICANO SOCIAL CRISTIANO": { className: "p-prsc", color: "var(--prsc)" },
   "FRENTE AMPLIO": { className: "p-fa", color: "var(--fa)" },
   "JUNTOS SAN JOSÉ": { className: "p-juntos", color: "var(--juntos)" },
+  "NUESTRO PUEBLO": {
+    className: "p-nuestro-pueblo",
+    color: "var(--nuestro-pueblo)",
+  },
+  "ACTUEMOS YA": { className: "p-actuemos-ya", color: "var(--actuemos-ya)" },
+  "AQUÍ COSTA RICA MANDA": {
+    className: "p-aqui-costa-rica-manda",
+    color: "var(--aqui-costa-rica-manda)",
+  },
+  "JUSTICIA SOCIAL COSTARRICENSE": {
+    className: "p-justicia-social",
+    color: "var(--justicia-social)",
+  },
+  "AGENDA DEMOCRÁTICA NACIONAL": {
+    className: "p-agenda-democratica",
+    color: "var(--agenda-democratica)",
+  },
+  "LA GRAN NICOYA": { className: "p-gran-nicoya", color: "var(--gran-nicoya)" },
+  "RENOVEMOS ALAJUELA": {
+    className: "p-renovemos-alajuela",
+    color: "var(--renovemos-alajuela)",
+  },
+  "UNIÓN GUANACASTECA": {
+    className: "p-union-guanacasteca",
+    color: "var(--union-guanacasteca)",
+  },
+  PROGRESER: { className: "p-progreser", color: "var(--progreser)" },
+  "SOMOS MORAVIA": {
+    className: "p-somos-moravia",
+    color: "var(--somos-moravia)",
+  },
+  "RESTAURACIÓN NACIONAL": {
+    className: "p-restauracion-nacional",
+    color: "var(--restauracion-nacional)",
+  },
+  "ALIANZA DEMÓCRATA CRISTIANA": {
+    className: "p-alianza-democrata",
+    color: "var(--alianza-democrata)",
+  },
+  "INTEGRACIÓN NACIONAL": {
+    className: "p-integracion-nacional",
+    color: "var(--integracion-nacional)",
+  },
+  "COMUNAL UNIDO": {
+    className: "p-comunal-unido",
+    color: "var(--comunal-unido)",
+  },
+  "RECUPERANDO VALORES": {
+    className: "p-recuperando-valores",
+    color: "var(--recuperando-valores)",
+  },
 };
 
 const OTHER_SWATCH: PartySwatch = {

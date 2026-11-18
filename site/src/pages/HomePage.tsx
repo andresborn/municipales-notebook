@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { ArrowIcon } from "../components/ArrowIcon";
 import { CantonSeatStrips } from "../components/CantonSeatStrips";
 import { PartyBars, type PartyBarRow } from "../components/PartyBars";
 import { SiteFooter } from "../components/SiteFooter";
@@ -22,7 +23,6 @@ type HomePageProps = {
 export function HomePage({ year }: HomePageProps) {
   const data = elections[year];
   const [showAllAlcaldias, setShowAllAlcaldias] = useState(false);
-  const [showAllRegidurias, setShowAllRegidurias] = useState(false);
 
   const totalRegidurias = data.regiduriasCanton.reduce(
     (total, row) => total + row.regidurias,
@@ -54,21 +54,6 @@ export function HomePage({ year }: HomePageProps) {
 
   const alcaldiaMax = data.partidosAlcaldiaNacional[0]?.votos ?? 1;
 
-  const regiduriaBars: PartyBarRow[] = data.partidosRegiduriaNacional.map(
-    (row) => ({
-      key: row.partido,
-      label: displayParty(row.partido),
-      partido: row.partido,
-      value: row.votos,
-      note: fmtPct(row.porcentajeVotos, 2),
-      aside: `${fmtInt(row.escanos)} ${
-        row.escanos === 1 ? "regiduría" : "regidurías"
-      }`,
-    }),
-  );
-
-  const regiduriaMax = data.partidosRegiduriaNacional[0]?.votos ?? 1;
-
   useEffect(() => {
     document.title = `Resultados municipales ${year} · Elecciones Costa Rica`;
   }, [year]);
@@ -96,11 +81,20 @@ export function HomePage({ year }: HomePageProps) {
 
             <div className="election-title">
               <p className="kicker">Municipales · Costa Rica</p>
-              <h1>Resultados de las elecciones municipales {year}</h1>
+              <h1>
+                Resumen nacional de resultados de las elecciones municipales{" "}
+                {year}
+              </h1>
               <p className="deck">
                 Alcaldías, regidurías y participación en los{" "}
                 {data.cantones.length} cantones.
               </p>
+              <div className="election-title-link">
+                <a className="link-arrow head-link" href={href.cantones(year)}>
+                  Ver fichas por cantón
+                  <ArrowIcon />
+                </a>
+              </div>
               <p className="byline">
                 <span>
                   Resultados oficiales · <b>TSE</b>
@@ -343,53 +337,21 @@ export function HomePage({ year }: HomePageProps) {
                   asignadas por cociente, subcociente y resto en los{" "}
                   {data.cantones.length} cantones. El porcentaje se calcula
                   sobre los {fmtInt(data.validosRegiduriasNacional)} votos
-                  válidos a regidurías. Los votos y el porcentaje aparecen
-                  dentro de la barra; las regidurías, fuera.
+                  válidos a regidurías.
                 </p>
               </figcaption>
-
-              <div className="bar-toolbar">
-                <p>
-                  {showAllRegidurias
-                    ? `Mostrando los ${regiduriaBars.length} partidos`
-                    : `Mostrando 10 de ${regiduriaBars.length} partidos`}
-                </p>
-                <button
-                  type="button"
-                  className="bar-expand"
-                  aria-expanded={showAllRegidurias}
-                  aria-controls="regidurias-bars"
-                  onClick={() => setShowAllRegidurias((value) => !value)}
-                >
-                  {showAllRegidurias
-                    ? "Ver solo los 10 primeros"
-                    : `Ver los ${regiduriaBars.length} partidos`}
-                </button>
-              </div>
-
-              <div id="regidurias-bars">
-                <PartyBars
-                  rows={
-                    showAllRegidurias
-                      ? regiduriaBars
-                      : regiduriaBars.slice(0, 10)
-                  }
-                  max={regiduriaMax}
-                  unit="votos"
-                  inlineValue
-                />
-              </div>
 
               <CantonSeatStrips
                 year={year}
                 cantones={data.cantones}
                 escanosPorCanton={data.escanosPorCanton}
+                defaultOpen
               />
 
               <details className="disclosure">
                 <summary>
-                  Ver la tabla de los {data.partidosRegiduriaNacional.length}{" "}
-                  partidos
+                  Ver votos por regidurías de los{" "}
+                  {data.partidosRegiduriaNacional.length} partidos
                 </summary>
                 <div className="table-wrap">
                   <table>

@@ -43,7 +43,18 @@ export const routeFromHash = (hash = window.location.hash): Route => {
 
   // Enlaces anteriores al selector de año.
   if (first === "cantones") {
-    return { page: "cantones", year: DEFAULT_YEAR };
+    return {
+      page: "cantones",
+      year: DEFAULT_YEAR,
+      ...(second && third
+        ? {
+            cantonSlug: {
+              provincia: second.toLowerCase(),
+              canton: third.toLowerCase(),
+            },
+          }
+        : {}),
+    };
   }
 
   if (first === String(SOON_YEAR)) {

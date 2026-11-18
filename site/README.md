@@ -41,8 +41,9 @@ El build queda en `site/dist/`.
   `#/2024/cantones/:provincia/:canton`: ficha del cantón.
 - `#/2026`: módulo nacional en preparación.
 
-El enlace antiguo `#/cantones` se resuelve a `#/2024/cantones`; los años no
-reconocidos vuelven a la portada.
+El enlace antiguo `#/cantones` se resuelve a `#/2024/cantones`; si incluye
+provincia y cantón, conserva la ficha correspondiente. Los años no reconocidos
+vuelven a la portada.
 
 ## Datos
 

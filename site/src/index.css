@@ -88,7 +88,7 @@ a {
 }
 
 a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 img,
@@ -115,7 +115,7 @@ abbr[title] {
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--accent-text);
   color: #fff;
 }
 

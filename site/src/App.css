@@ -187,8 +187,8 @@
 }
 
 .btn:hover {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-text);
+  background: var(--accent-text);
   color: #fff;
 }
 
@@ -210,8 +210,8 @@
 }
 
 .btn--light:hover {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-text);
+  background: var(--accent-text);
   color: #fff;
 }
 
@@ -226,8 +226,8 @@
 }
 
 .link-arrow:hover {
-  border-bottom-color: var(--accent);
-  color: var(--accent);
+  border-bottom-color: var(--accent-text);
+  color: var(--accent-text);
 }
 
 .link-arrow svg {
@@ -339,8 +339,8 @@
 }
 
 .crumbs a:hover {
-  border-bottom-color: var(--accent);
-  color: var(--accent);
+  border-bottom-color: var(--accent-text);
+  color: var(--accent-text);
 }
 
 .crumbs .sep {
@@ -370,7 +370,7 @@
 }
 
 .year-switch a:hover {
-  background: var(--accent);
+  background: var(--accent-text);
   color: #fff;
 }
 
@@ -477,6 +477,7 @@
   border-top: 0;
 }
 
+.figure-head h2,
 .figure-head h3 {
   margin-top: 8px;
   font-size: clamp(22px, 2.4vw, 28px);
@@ -624,7 +625,7 @@
 }
 
 .ecard--soon .ecard-year {
-  color: var(--faint);
+  color: var(--muted);
 }
 
 .ecard:hover .ecard--soon .ecard-year,
@@ -689,7 +690,7 @@
 }
 
 .ecard:hover .ecard-cta {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -828,7 +829,7 @@
   content: "1.º";
   display: inline-block;
   margin-left: 6px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 9px;
   letter-spacing: 0.02em;
   vertical-align: 2px;
@@ -914,7 +915,7 @@
 }
 
 .turnout-fill.is-current {
-  background: var(--accent);
+  background: var(--accent-text);
 }
 
 .turnout-side {
@@ -1065,7 +1066,7 @@
 }
 
 .province-label em {
-  color: var(--faint);
+  color: var(--muted);
   font-size: 9px;
   font-style: normal;
   font-weight: 400;
@@ -1245,8 +1246,8 @@ tbody tr.is-winner:hover {
 }
 
 .badge--hot {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--accent-text);
+  background: var(--accent-text);
   color: #fff;
 }
 
@@ -1406,7 +1407,7 @@ details.disclosure .table-wrap {
 }
 
 .canton-path .bar-brand span {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .canton-path .sep {
@@ -1835,7 +1836,7 @@ details.disclosure .table-wrap {
 .soon-card .status {
   display: inline-block;
   margin-bottom: 14px;
-  color: var(--accent);
+  color: var(--accent-text);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -2131,6 +2132,12 @@ details.disclosure .table-wrap {
     border-top: 1px solid var(--rule);
   }
 
+  .canton-path .path-country,
+  .canton-path .path-election,
+  .canton-path .path-sep {
+    display: none;
+  }
+
   .canton-layout,
   .participation-block {
     grid-template-columns: 1fr;
@@ -2323,6 +2330,7 @@ details.disclosure .table-wrap {
     font-size: 10px;
   }
 
+  .figure-head h2,
   .figure-head h3 {
     font-size: 22px;
   }
@@ -2346,11 +2354,6 @@ details.disclosure .table-wrap {
 
   .province-label {
     width: 86px;
-  }
-
-  .tile {
-    width: 17px;
-    height: 17px;
   }
 
   .stat-band .stat:last-child {

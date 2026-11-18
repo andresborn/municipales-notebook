@@ -109,7 +109,7 @@ export function TileMap({ data }: TileMapProps) {
           </span>
         ) : null}
       </div>
-      <div className="legend" aria-label="Partidos ganadores">
+      <div className="legend" role="group" aria-label="Partidos ganadores">
         {coloredParties.map((row) => (
           <span key={row.partido}>
             <i className={partyClass(row.partido)} aria-hidden="true" />

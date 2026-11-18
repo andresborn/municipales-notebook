@@ -23,6 +23,7 @@ export function CantonBar({
       <div className="wrap canton-bar-inner">
         <div
           className="canton-path"
+          role="group"
           aria-label={`Estás viendo Costa Rica, elecciones municipales ${year}`}
         >
           <a className="bar-brand" href={href.landing()}>

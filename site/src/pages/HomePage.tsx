@@ -193,9 +193,9 @@ export function HomePage({ year }: HomePageProps) {
             <figure className="figure">
               <figcaption className="figure-head">
                 <p className="kicker">Participación</p>
-                <h3 id="participacion-heading">
+                <h2 id="participacion-heading">
                   Participación en la papeleta de alcaldía
-                </h3>
+                </h2>
                 <p className="figure-sub">
                   Porcentaje del electorado inscrito que emitió un voto. El
                   resto de la barra es abstencionismo.
@@ -247,7 +247,7 @@ export function HomePage({ year }: HomePageProps) {
             <figure className="figure">
               <figcaption className="figure-head">
                 <p className="kicker">Alcaldías</p>
-                <h3 id="alcaldias-heading">Alcaldías ganadas por partido</h3>
+                <h2 id="alcaldias-heading">Alcaldías ganadas por partido</h2>
                 <p className="figure-sub">
                   Cantones ganados por cada partido en {year}. Los partidos sin
                   color propio se agrupan en «Otros partidos».
@@ -314,7 +314,7 @@ export function HomePage({ year }: HomePageProps) {
             <figure className="figure">
               <figcaption className="figure-head">
                 <p className="kicker">Regidurías</p>
-                <h3 id="regidurias-heading">Regidurías por partido</h3>
+                <h2 id="regidurias-heading">Regidurías por partido</h2>
                 <p className="figure-sub">
                   Escaños asignados por cociente, subcociente y resto en los{" "}
                   {data.cantones.length} cantones. Los porcentajes se calculan

@@ -9,6 +9,7 @@ con un módulo nacional 2026 en preparación.
 - `src/data/clean/`: CSV limpios generados por los ETL.
 - `src/municipales_notebook/etl/2024/`: notebooks que leen el Excel de 2024 y exportan CSV.
 - `src/municipales_notebook/etl/2020/`: notebooks que leen el Excel de 2020 y exportan CSV.
+- `src/municipales_notebook/etl/2026/`: ETL de las elecciones nacionales de 2026.
 - `src/municipales_notebook/eda/`: notebooks de análisis exploratorio.
 - `src/municipales_notebook/lib/`: funciones de cálculo compartidas.
 - `site/`: sitio web estático en React y Vite.
@@ -55,6 +56,34 @@ Mismo orden, leyendo `COMPUTO DE VOTOS MUNICIPALES FEB 2020.xlsm`:
 En 2020 el país tenía 82 cantones: Monteverde y Puerto Jiménez se crearon
 después (leyes 10019 y 10195), así que Puntarenas suma 11 cantones en lugar de
 13.
+
+### 2026
+
+`etl/2026/presidencial.py` lee el cuadro **1.2** del cómputo de las elecciones
+nacionales (`Computo de Votos Elecciones 2026 (vf2).xlsm`) y usa el cuadro
+**1.1** como referencia para validar totales por provincia y el total nacional.
+Genera:
+
+- `presidencial_2026.csv`: votos por partido y cantón.
+- `participacion_presidencial_2026.csv`: electorado, participación y
+  abstencionismo por cantón.
+- `resumen_presidencial_canton_2026.csv`: ganador, segundo lugar, margen, ENP y
+  participación por cantón.
+- `resumen_presidencial_partido_2026.csv`: votos nacionales por partido, con
+  voto cantonal y voto en el extranjero por separado, además de cantones y
+  provincias ganados.
+
+La presidencial se analiza por cantón. El voto en el extranjero no se asigna a
+ningún cantón: se conserva como circunscripción propia en el resumen por
+partido. Los totales nacionales incluyen ese voto; los totales cantonales no.
+
+Para ejecutarlo:
+
+```bash
+uv run marimo export session \
+  src/municipales_notebook/etl/2026/presidencial.py \
+  --no-sandbox --force-overwrite
+```
 
 Los CSV `participacion_*` tienen una fila por cantón y elección:
 `provincia, canton, electorado, votos_recibidos, participacion, abstencionismo`.

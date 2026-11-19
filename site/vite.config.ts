@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
   // Project pages are served from /municipales-notebook/, but local dev uses /.
-  base: mode === "production" ? "/" : "/",
+  base: mode === "production" ? "/municipales-notebook/" : "/",
   plugins: [react()],
   server: {
     fs: {

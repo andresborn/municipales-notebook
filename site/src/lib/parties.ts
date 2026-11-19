@@ -70,6 +70,39 @@ const PARTY_SWATCHES: Record<string, PartySwatch> = {
     className: "p-recuperando-valores",
     color: "var(--recuperando-valores)",
   },
+  "PUEBLO SOBERANO": {
+    className: "p-pueblo-soberano",
+    color: "var(--pueblo-soberano)",
+  },
+  "COALICIÓN AGENDA CIUDADANA": {
+    className: "p-coalicion-agenda",
+    color: "var(--coalicion-agenda)",
+  },
+  AVANZA: { className: "p-avanza", color: "var(--avanza)" },
+  "ALIANZA COSTA RICA PRIMERO": {
+    className: "p-alianza-cr-primero",
+    color: "var(--alianza-cr-primero)",
+  },
+  "CENTRO DEMOCRÁTICO Y SOCIAL": {
+    className: "p-centro-democratico-social",
+    color: "var(--centro-democratico-social)",
+  },
+  "DE LA CLASE TRABAJADORA": {
+    className: "p-clase-trabajadora",
+    color: "var(--clase-trabajadora)",
+  },
+  "ESPERANZA NACIONAL": {
+    className: "p-esperanza-nacional",
+    color: "var(--esperanza-nacional)",
+  },
+  "ESPERANZA Y LIBERTAD": {
+    className: "p-esperanza-libertad",
+    color: "var(--esperanza-libertad)",
+  },
+  "UNIÓN COSTARRICENSE DEMOCRÁTICA": {
+    className: "p-union-cr-democratica",
+    color: "var(--union-cr-democratica)",
+  },
 };
 
 const OTHER_SWATCH: PartySwatch = {

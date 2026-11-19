@@ -10,6 +10,7 @@ import {
   type ElectionYear,
 } from "../lib/data";
 import { fmtInt, fmtPct } from "../lib/format";
+import { presidential2026 } from "../lib/presidential";
 import { href } from "../lib/routes";
 
 const defaultCanton = (year: ElectionYear) => {
@@ -35,6 +36,11 @@ const statsFor = (data: ElectionData) => ({
 export function LandingPage() {
   const municipal2024 = statsFor(elections[2024]);
   const municipal2020 = statsFor(elections[2020]);
+  const presidencial = presidential2026;
+  const defaultPresidencialCanton =
+    presidencial.cantones.find(
+      (canton) => canton.key === defaultCantonKey,
+    ) ?? presidencial.cantones[0];
 
   useEffect(() => {
     document.title = "Elecciones Costa Rica · 2020–2026";
@@ -53,9 +59,9 @@ export function LandingPage() {
             </h1>
             <p className="deck">
               Esta página provee visualizaciones de los resultados de las
-              elecciones municipales de 2020 y 2024 en Costa Rica. Incluye
-              resúmenes a nivel nacional y cantonal de las alcaldías y
-              regidurías electas.
+              elecciones municipales de 2020 y 2024, y de la elección
+              presidencial de 2026 en Costa Rica. Incluye resúmenes a nivel
+              nacional y cantonal.
             </p>
           </div>
         </section>
@@ -126,18 +132,30 @@ export function LandingPage() {
 
             <ElectionCard
               category="Nacional"
-              status="En preparación"
+              status="Resultados"
               year="2026"
-              title="Elecciones nacionales"
-              description="Presidencial, 57 diputaciones y participación. El módulo se incorporará cuando los resultados estén disponibles."
+              title="Elecciones presidenciales"
+              description="Resultados presidenciales en los 84 cantones."
               stats={[
-                { value: "57", label: "diputaciones" },
-                { value: "7", label: "provincias" },
-                { value: "84", label: "cantones" },
+                {
+                  value: fmtInt(presidencial.cantones.length),
+                  label: "cantones",
+                },
+                {
+                  value: fmtInt(presidencial.partidosNacional.length),
+                  label: "partidos",
+                },
+                {
+                  value: fmtPct(presidencial.nacional.participacion, 2),
+                  label: "participación",
+                },
               ]}
-              href={href.soon()}
-              cta="Ver el alcance"
-              soon
+              href={href.presidential()}
+              cta="Ver resumen nacional"
+              secondaryCta={{
+                label: "Ver resultados por cantón",
+                href: href.presidentialCantones(defaultPresidencialCanton),
+              }}
             />
           </div>
         </section>
@@ -168,7 +186,8 @@ export function LandingPage() {
               <a href="https://www.tse.go.cr" target="_blank" rel="noreferrer">
                 Tribunal Supremo de Elecciones (TSE)
               </a>
-              . Los resultados de 2026 se incorporarán cuando estén disponibles.
+              . Los resultados de 2026 corresponden a la elección presidencial;
+              las diputaciones se incorporarán cuando estén disponibles.
             </p>
           </div>
         </section>

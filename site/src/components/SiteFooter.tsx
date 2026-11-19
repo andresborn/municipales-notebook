@@ -16,7 +16,7 @@ export function SiteFooter() {
           <a href={href.landing()}>Inicio</a>
           <a href={href.home(2024)}>Municipal 2024</a>
           <a href={href.home(2020)}>Municipal 2020</a>
-          <a href={href.soon()}>Nacional 2026</a>
+          <a href={href.presidential()}>Nacional 2026</a>
         </nav>
       </div>
     </footer>

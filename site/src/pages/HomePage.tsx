@@ -424,7 +424,19 @@ export function HomePage({ year }: HomePageProps) {
               </p>
             </div>
 
-            <TileMap key={year} data={data} />
+            <TileMap
+              key={year}
+              cantones={data.cantones}
+              winnerForCanton={(canton) =>
+                data.alcaldePorCanton.get(canton.key)?.ganador
+              }
+              hrefForCanton={(canton) => href.cantones(year, canton)}
+              ariaLabel={`Mapa de alcaldías ganadas por partido en ${year}`}
+              legend={data.alcaldiasPorPartido.map((row) => ({
+                partido: row.partido,
+                cantones: row.cantones,
+              }))}
+            />
             <p className="source">
               Fuente: TSE · Resumen de alcaldías por cantón. Los partidos sin
               color propio se agrupan en «Otros partidos».

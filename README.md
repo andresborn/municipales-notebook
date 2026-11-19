@@ -1,7 +1,7 @@
 # Elecciones Costa Rica
 
 Datos y sitio web de las elecciones municipales de Costa Rica de 2020 y 2024,
-con un módulo nacional 2026 en preparación.
+y de la elección presidencial de 2026.
 
 ## Estructura
 
@@ -72,6 +72,8 @@ Genera:
 - `resumen_presidencial_partido_2026.csv`: votos nacionales por partido, con
   voto cantonal y voto en el extranjero por separado, además de cantones y
   provincias ganados.
+- `presidencial_nacional_2026.csv`: totales nacionales de juntas, electorado,
+  votos recibidos, válidos, nulos, blancos, participación y abstencionismo.
 
 La presidencial se analiza por cantón. El voto en el extranjero no se asigna a
 ningún cantón: se conserva como circunscripción propia en el resumen por
@@ -131,13 +133,15 @@ Páginas:
   `#/2024/cantones`.
 - Ficha por cantón: `#/2020/cantones/:provincia/:canton` y
   `#/2024/cantones/:provincia/:canton`.
-- Módulo nacional 2026 en preparación: `#/2026`.
+- Resumen presidencial 2026: `#/2026`.
+- Ficha presidencial por cantón: `#/2026/cantones/:provincia/:canton`.
 
 El resumen nacional incluye participación, alcaldías, regidurías, mapa de
 cantones y tabla completa. La ficha por cantón incluye alcaldía, composición del
 concejo, participación por papeleta y glosario. En 2020 hay 82 cantones; en 2024,
-84, tras la creación de Monteverde y Puerto Jiménez. El módulo de 2026 no muestra
-cifras simuladas: se incorporará cuando existan resultados oficiales.
+84, tras la creación de Monteverde y Puerto Jiménez. El módulo de 2026 incluye
+la elección presidencial, con resumen nacional, mapa por cantón y ficha de cada
+cantón.
 
 Para desarrollar:
 

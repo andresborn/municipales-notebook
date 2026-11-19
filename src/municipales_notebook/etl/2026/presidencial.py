@@ -81,12 +81,16 @@ def _(Path):
     RUTA_RESUMEN_PARTIDO = (
         RAIZ / "src" / "data" / "clean" / "resumen_presidencial_partido_2026.csv"
     )
+    RUTA_NACIONAL = (
+        RAIZ / "src" / "data" / "clean" / "presidencial_nacional_2026.csv"
+    )
 
     HOJA = "C1.2"
     HOJA_REFERENCIA = "C1.1"
     return (
         HOJA,
         HOJA_REFERENCIA,
+        RUTA_NACIONAL,
         RUTA_PARTICIPACION,
         RUTA_PRESIDENCIAL,
         RUTA_RESUMEN_CANTON,
@@ -473,11 +477,16 @@ def _(
                             fila_nacional[columna],
                             f"{hoja}/COSTA RICA/{partido}",
                         ),
+                        "juntas": metricas["juntas"],
+                        "electorado": metricas["electorado"],
+                        "votos_recibidos": metricas["votos_recibidos"],
                         "votos_validos": metricas["votos_validos"],
                         "votos_nulos": metricas["votos_nulos"],
                         "votos_blancos": metricas["votos_blancos"],
-                        "electorado": metricas["electorado"],
-                        "votos_recibidos": metricas["votos_recibidos"],
+                        "participacion": round(metricas["participacion"], 2),
+                        "abstencionismo": round(
+                            100 - metricas["participacion"], 2
+                        ),
                     }
                     for columna, partido in partidos
                 ]
@@ -748,6 +757,33 @@ def _(votos_canton, votos_nacional, votos_provincia):
 
 
 @app.cell
+def _(pd, votos_nacional):
+    # Totales nacionales de la papeleta presidencial. Incluyen el voto en el
+    # extranjero y se usan en el sitio para la banda de cifras nacionales.
+    resumen_nacional = pd.DataFrame(
+        [
+            {
+                "juntas": int(votos_nacional["juntas"].iloc[0]),
+                "electorado": int(votos_nacional["electorado"].iloc[0]),
+                "votos_recibidos": int(
+                    votos_nacional["votos_recibidos"].iloc[0]
+                ),
+                "votos_validos": int(votos_nacional["votos_validos"].iloc[0]),
+                "votos_nulos": int(votos_nacional["votos_nulos"].iloc[0]),
+                "votos_blancos": int(votos_nacional["votos_blancos"].iloc[0]),
+                "participacion": float(
+                    votos_nacional["participacion"].iloc[0]
+                ),
+                "abstencionismo": float(
+                    votos_nacional["abstencionismo"].iloc[0]
+                ),
+            }
+        ]
+    )
+    return (resumen_nacional,)
+
+
+@app.cell
 def _(
     CANTONES_ESPERADOS,
     participacion_canton,
@@ -915,6 +951,7 @@ def _(
 
 @app.cell
 def _(
+    RUTA_NACIONAL,
     RUTA_PARTICIPACION,
     RUTA_PRESIDENCIAL,
     RUTA_RESUMEN_CANTON,
@@ -922,6 +959,7 @@ def _(
     mo,
     participacion_canton,
     resumen_canton,
+    resumen_nacional,
     resumen_partido,
     validacion_ok,
     votos_canton,
@@ -958,6 +996,11 @@ def _(
             index=False,
             encoding="utf-8",
         )
+        resumen_nacional.to_csv(
+            RUTA_NACIONAL,
+            index=False,
+            encoding="utf-8",
+        )
 
         mensaje = mo.md(
             "CSV guardados en `src/data/clean/`:\n\n"
@@ -968,7 +1011,9 @@ def _(
             f"- `{RUTA_RESUMEN_CANTON.name}`: "
             f"**{len(resumen_canton):,} cantones**\n"
             f"- `{RUTA_RESUMEN_PARTIDO.name}`: "
-            f"**{len(resumen_partido):,} partidos**"
+            f"**{len(resumen_partido):,} partidos**\n"
+            f"- `{RUTA_NACIONAL.name}`: "
+            f"**1 fila de totales nacionales**"
         )
     else:
         mensaje = mo.md(

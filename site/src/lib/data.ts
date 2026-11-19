@@ -179,7 +179,7 @@ const csvSources: Record<ElectionYear, CsvSources> = {
   },
 };
 
-const PROVINCE_ORDER = [
+export const PROVINCE_ORDER = [
   "SAN JOSÉ",
   "ALAJUELA",
   "CARTAGO",
@@ -189,7 +189,7 @@ const PROVINCE_ORDER = [
   "LIMÓN",
 ];
 
-const provinceRank = (provincia: string) => {
+export const provinceRank = (provincia: string) => {
   const index = PROVINCE_ORDER.indexOf(provincia);
   return index === -1 ? PROVINCE_ORDER.length : index;
 };

@@ -4,7 +4,8 @@ import { routeFromHash, type Route } from "./lib/routes";
 import { CantonPage } from "./pages/CantonPage";
 import { HomePage } from "./pages/HomePage";
 import { LandingPage } from "./pages/LandingPage";
-import { SoonPage } from "./pages/SoonPage";
+import { PresidentialCantonPage } from "./pages/PresidentialCantonPage";
+import { PresidentialHomePage } from "./pages/PresidentialHomePage";
 import "./App.css";
 
 const renderRoute = (route: Route) => {
@@ -15,8 +16,10 @@ const renderRoute = (route: Route) => {
       return <HomePage key={route.year} year={route.year} />;
     case "cantones":
       return <CantonPage year={route.year} cantonSlug={route.cantonSlug} />;
-    case "soon":
-      return <SoonPage />;
+    case "presidential-home":
+      return <PresidentialHomePage />;
+    case "presidential-cantones":
+      return <PresidentialCantonPage cantonSlug={route.cantonSlug} />;
   }
 };
 

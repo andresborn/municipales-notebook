@@ -10,39 +10,17 @@ import {
   type CantonSlug,
   type ElectionYear,
 } from "../lib/data";
-import { fmtDecimal, fmtInt, fmtPct, fmtPp } from "../lib/format";
+import {
+  CLASSIFICATION_INFO,
+  ppLabel,
+} from "../lib/classification";
+import { fmtDecimal, fmtInt, fmtPct } from "../lib/format";
 import { displayName, displayParty, partyClass } from "../lib/parties";
 import { href, type CantonLink } from "../lib/routes";
 
 type CantonPageProps = {
   year: ElectionYear;
   cantonSlug?: CantonSlug;
-};
-
-/** Un margen puede ser positivo y aun así redondear a 0,0 pp. */
-const ppLabel = (value: number, votes: number) =>
-  votes > 0 && value < 0.1 ? "<0,1 pp" : fmtPp(value);
-
-const CLASSIFICATION_INFO: Record<
-  string,
-  { className: string; threshold: string }
-> = {
-  "Muy disputado": {
-    className: "badge--hot",
-    threshold: "Margen menor a 5 pp",
-  },
-  Disputado: {
-    className: "badge--dark",
-    threshold: "Margen entre 5 y 10 pp",
-  },
-  "Poco disputado": {
-    className: "badge--soft",
-    threshold: "Margen entre 10 y 20 pp",
-  },
-  Dominado: {
-    className: "",
-    threshold: "Margen de 20 pp o más",
-  },
 };
 
 export function CantonPage({ year, cantonSlug }: CantonPageProps) {

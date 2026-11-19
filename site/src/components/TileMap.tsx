@@ -1,16 +1,24 @@
 import { useMemo, useRef, useState } from "react";
 
-import type { CantonOption, ElectionData } from "../lib/data";
+import type { CantonOption } from "../lib/data";
 import {
   displayName,
   displayParty,
   hasOwnColor,
   partyClass,
 } from "../lib/parties";
-import { href } from "../lib/routes";
+
+export type TileMapLegendRow = {
+  partido: string;
+  cantones: number;
+};
 
 type TileMapProps = {
-  data: ElectionData;
+  cantones: CantonOption[];
+  winnerForCanton: (canton: CantonOption) => string | undefined;
+  hrefForCanton: (canton: CantonOption) => string;
+  ariaLabel: string;
+  legend: TileMapLegendRow[];
 };
 
 type TooltipState = {
@@ -22,19 +30,25 @@ type TooltipState = {
 /** Ancho máximo estimado del tooltip para no salirse del mapa. */
 const TOOLTIP_WIDTH = 180;
 
-export function TileMap({ data }: TileMapProps) {
+export function TileMap({
+  cantones,
+  winnerForCanton,
+  hrefForCanton,
+  ariaLabel,
+  legend,
+}: TileMapProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
   const groups = useMemo(() => {
     const map = new Map<string, CantonOption[]>();
-    for (const canton of data.cantones) {
+    for (const canton of cantones) {
       const group = map.get(canton.provincia) ?? [];
       group.push(canton);
       map.set(canton.provincia, group);
     }
     return [...map.entries()];
-  }, [data.cantones]);
+  }, [cantones]);
 
   const showTooltip = (name: string, element: HTMLElement) => {
     const map = mapRef.current;
@@ -48,10 +62,8 @@ export function TileMap({ data }: TileMapProps) {
     });
   };
 
-  const coloredParties = data.alcaldiasPorPartido.filter((row) =>
-    hasOwnColor(row.partido),
-  );
-  const otherCount = data.alcaldiasPorPartido
+  const coloredParties = legend.filter((row) => hasOwnColor(row.partido));
+  const otherCount = legend
     .filter((row) => !hasOwnColor(row.partido))
     .reduce((total, row) => total + row.cantones, 0);
 
@@ -60,29 +72,29 @@ export function TileMap({ data }: TileMapProps) {
       <div
         className="tile-map"
         role="group"
-        aria-label={`Mapa de alcaldías ganadas por partido en ${data.year}`}
+        aria-label={ariaLabel}
         ref={mapRef}
       >
-        {groups.map(([provincia, cantones]) => (
+        {groups.map(([provincia, cantonesDeProvincia]) => (
           <div className="province-row" key={provincia}>
             <span className="province-label">
               {displayName(provincia)}
-              <em>{cantones.length}</em>
+              <em>{cantonesDeProvincia.length}</em>
             </span>
             <div className="tiles">
-              {cantones.map((canton) => {
-                const alcalde = data.alcaldePorCanton.get(canton.key);
-                if (!alcalde) return null;
+              {cantonesDeProvincia.map((canton) => {
+                const winner = winnerForCanton(canton);
+                if (!winner) return null;
 
                 const cantonName = displayName(canton.canton);
 
                 return (
                   <a
                     key={canton.key}
-                    className={`tile ${partyClass(alcalde.ganador)}`}
-                    href={href.cantones(data.year, canton)}
+                    className={`tile ${partyClass(winner)}`}
+                    href={hrefForCanton(canton)}
                     aria-label={`${cantonName}: ${displayParty(
-                      alcalde.ganador,
+                      winner,
                     )}. Ver la ficha del cantón.`}
                     onMouseEnter={(event) =>
                       showTooltip(cantonName, event.currentTarget)

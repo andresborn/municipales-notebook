@@ -2,16 +2,22 @@ import type { CantonOption, CantonSlug, ElectionYear } from "./data";
 
 export type { CantonSlug } from "./data";
 
-export type Page = "landing" | "home" | "cantones" | "soon";
+export type Page =
+  | "landing"
+  | "home"
+  | "cantones"
+  | "presidential-home"
+  | "presidential-cantones";
 
 export type Route =
   | { page: "landing" }
   | { page: "home"; year: ElectionYear }
   | { page: "cantones"; year: ElectionYear; cantonSlug?: CantonSlug }
-  | { page: "soon" };
+  | { page: "presidential-home" }
+  | { page: "presidential-cantones"; cantonSlug?: CantonSlug };
 
 export const DEFAULT_YEAR: ElectionYear = 2024;
-export const SOON_YEAR = 2026;
+export const PRESIDENTIAL_YEAR = 2026;
 
 export type CantonLink = Pick<CantonOption, "slugProvincia" | "slugCanton">;
 
@@ -22,7 +28,11 @@ export const href = {
     `#/${year}/cantones${
       canton ? `/${canton.slugProvincia}/${canton.slugCanton}` : ""
     }`,
-  soon: () => `#/${SOON_YEAR}`,
+  presidential: () => `#/${PRESIDENTIAL_YEAR}`,
+  presidentialCantones: (canton?: CantonLink) =>
+    `#/${PRESIDENTIAL_YEAR}/cantones${
+      canton ? `/${canton.slugProvincia}/${canton.slugCanton}` : ""
+    }`,
 };
 
 const parseYear = (value: string | undefined): ElectionYear | null => {
@@ -57,8 +67,20 @@ export const routeFromHash = (hash = window.location.hash): Route => {
     };
   }
 
-  if (first === String(SOON_YEAR)) {
-    return { page: "soon" };
+  if (first === String(PRESIDENTIAL_YEAR)) {
+    if (second === "cantones") {
+      return third && fourth
+        ? {
+            page: "presidential-cantones",
+            cantonSlug: {
+              provincia: third.toLowerCase(),
+              canton: fourth.toLowerCase(),
+            },
+          }
+        : { page: "presidential-cantones" };
+    }
+
+    return { page: "presidential-home" };
   }
 
   const year = parseYear(first);

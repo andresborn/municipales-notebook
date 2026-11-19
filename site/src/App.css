@@ -368,6 +368,7 @@
   color: #fff;
 }
 
+
 .election-title {
   max-width: 920px;
   margin-top: 30px;
@@ -2403,6 +2404,42 @@ details.disclosure .table-wrap {
   --c: var(--recuperando-valores);
 }
 
+.p-pueblo-soberano {
+  --c: var(--pueblo-soberano);
+}
+
+.p-coalicion-agenda {
+  --c: var(--coalicion-agenda);
+}
+
+.p-avanza {
+  --c: var(--avanza);
+}
+
+.p-alianza-cr-primero {
+  --c: var(--alianza-cr-primero);
+}
+
+.p-centro-democratico-social {
+  --c: var(--centro-democratico-social);
+}
+
+.p-clase-trabajadora {
+  --c: var(--clase-trabajadora);
+}
+
+.p-esperanza-nacional {
+  --c: var(--esperanza-nacional);
+}
+
+.p-esperanza-libertad {
+  --c: var(--esperanza-libertad);
+}
+
+.p-union-cr-democratica {
+  --c: var(--union-cr-democratica);
+}
+
 .p-otro {
   --c: var(--otro);
 }
@@ -2610,6 +2647,7 @@ details.disclosure .table-wrap {
     padding: 6px 9px;
     font-size: 11px;
   }
+
 
   .select-label {
     display: none;

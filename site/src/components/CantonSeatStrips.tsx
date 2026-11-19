@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   CantonOption,
@@ -24,12 +24,29 @@ type CantonSeatStripsProps = {
 const seatLabel = (value: number) =>
   `${fmtInt(value)} ${value === 1 ? "regiduría" : "regidurías"}`;
 
+type SeatTip = {
+  cantonKey: string;
+  partido: string;
+  escanos: number;
+  x: number;
+  y: number;
+  below: boolean;
+};
+
+const sameSeat = (a: SeatTip | null, b: SeatTip) =>
+  a !== null && a.cantonKey === b.cantonKey && a.partido === b.partido;
+
 export function CantonSeatStrips({
   year,
   cantones,
   escanosPorCanton,
   defaultOpen = false,
 }: CantonSeatStripsProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [hover, setHover] = useState<SeatTip | null>(null);
+  const [pinned, setPinned] = useState<SeatTip | null>(null);
+  const tip = hover ?? pinned;
+
   const groups = useMemo(() => {
     const map = new Map<string, CantonOption[]>();
 
@@ -69,6 +86,68 @@ export function CantonSeatStrips({
     };
   }, [escanosPorCanton]);
 
+  const makeTip = (
+    partido: string,
+    escanos: number,
+    cantonKey: string,
+    element: HTMLElement,
+  ): SeatTip | null => {
+    const content = contentRef.current;
+    if (!content) return null;
+
+    const contentRect = content.getBoundingClientRect();
+    const cellRect = element.getBoundingClientRect();
+    const half = 110;
+    const minX = Math.min(half + 8, content.clientWidth / 2);
+    const maxX = Math.max(minX, content.clientWidth - half - 8);
+    const rawX = cellRect.left - contentRect.left + cellRect.width / 2;
+    const below = cellRect.top < 100;
+
+    return {
+      cantonKey,
+      partido,
+      escanos,
+      x: Math.min(Math.max(rawX, minX), maxX),
+      y: below
+        ? cellRect.bottom - contentRect.top
+        : cellRect.top - contentRect.top,
+      below,
+    };
+  };
+
+  useEffect(() => {
+    if (!pinned) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (
+        target instanceof Element &&
+        target.closest(".canton-seat-strip i")
+      ) {
+        return;
+      }
+
+      setPinned(null);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [pinned]);
+
+  useEffect(() => {
+    if (!hover && !pinned) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+
+      setHover(null);
+      setPinned(null);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [hover, pinned]);
+
   return (
     <details
       className="disclosure canton-seat-disclosure"
@@ -76,7 +155,7 @@ export function CantonSeatStrips({
     >
       <summary>Ver regidurías por cantón</summary>
 
-      <div className="canton-seat-content">
+      <div className="canton-seat-content" ref={contentRef}>
         <div
           className="legend"
           role="group"
@@ -135,11 +214,41 @@ export function CantonSeatStrips({
                         Array.from({ length: row.escanos }, (_, index) => (
                           <i
                             key={`${row.partido}-${index}`}
-                            className={partyClass(row.partido)}
-                            title={`${displayParty(
-                              row.partido,
-                            )} · ${seatLabel(row.escanos)}`}
+                            className={`${partyClass(row.partido)}${
+                              tip?.cantonKey === canton.key &&
+                              tip.partido === row.partido
+                                ? " is-active"
+                                : ""
+                            }`}
                             aria-hidden="true"
+                            onPointerEnter={(event) => {
+                              if (event.pointerType !== "mouse") return;
+
+                              const next = makeTip(
+                                row.partido,
+                                row.escanos,
+                                canton.key,
+                                event.currentTarget,
+                              );
+                              if (next) setHover(next);
+                            }}
+                            onPointerLeave={(event) => {
+                              if (event.pointerType !== "mouse") return;
+                              setHover(null);
+                            }}
+                            onClick={(event) => {
+                              const next = makeTip(
+                                row.partido,
+                                row.escanos,
+                                canton.key,
+                                event.currentTarget,
+                              );
+                              if (!next) return;
+
+                              setPinned((prev) =>
+                                sameSeat(prev, next) ? null : next,
+                              );
+                            }}
                           />
                         )),
                       )}
@@ -152,11 +261,24 @@ export function CantonSeatStrips({
           ))}
         </div>
 
+        {tip ? (
+          <span
+            className={`canton-seat-tooltip${
+              tip.below ? " canton-seat-tooltip--below" : ""
+            }`}
+            aria-hidden="true"
+            style={{ left: tip.x, top: tip.y }}
+          >
+            <b>{displayParty(tip.partido)}</b>
+            <span>{seatLabel(tip.escanos)}</span>
+          </span>
+        ) : null}
+
         <p className="figure-note">
           Cada cuadro es una regiduría. El color identifica al partido; los
-          partidos sin color propio aparecen en gris. En escritorio, pasa el
-          cursor sobre un cuadro para ver el partido; en móvil, abre el cantón
-          para ver el detalle completo.
+          partidos sin color propio aparecen en gris. Pasa el cursor sobre un
+          cuadro para ver el partido; en móvil, toca un cuadro. El enlace del
+          cantón abre la ficha completa.
         </p>
       </div>
     </details>

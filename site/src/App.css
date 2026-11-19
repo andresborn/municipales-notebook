@@ -1118,6 +1118,7 @@
 }
 
 .canton-seat-content {
+  position: relative;
   padding: 2px 0 18px;
 }
 
@@ -1191,11 +1192,50 @@
   width: 12px;
   height: 12px;
   background: var(--c, var(--otro));
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
-.canton-seat-strip i:hover {
+.canton-seat-strip i:hover,
+.canton-seat-strip i.is-active {
   outline: 1px solid var(--ink);
   outline-offset: 1px;
+}
+
+.canton-seat-strip i.is-active {
+  outline-width: 2px;
+}
+
+.canton-seat-tooltip {
+  position: absolute;
+  z-index: 40;
+  display: grid;
+  gap: 1px;
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 8px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.25;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 6px));
+}
+
+.canton-seat-tooltip b {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.canton-seat-tooltip span {
+  color: rgb(255 255 255 / 70%);
+  font-size: 9px;
+}
+
+.canton-seat-tooltip--below {
+  transform: translate(-50%, 6px);
 }
 
 .canton-seat-total {
@@ -2639,6 +2679,11 @@ details.disclosure .table-wrap {
   .canton-seat-row {
     grid-template-columns: minmax(84px, 1fr) minmax(0, 1.4fr) 24px;
     gap: 8px;
+  }
+
+  .canton-seat-strip i {
+    width: 16px;
+    height: 16px;
   }
 
   .election-title h1 {

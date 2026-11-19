@@ -162,10 +162,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
 
   const alcaldiaMax = partidos[0]?.votos ?? 1;
   const seatParties = escanos.filter((row) => row.escanos > 0);
-  const seatTotal = seatParties.reduce(
-    (total, row) => total + row.escanos,
-    0,
-  );
+  const seatTotal = seatParties.reduce((total, row) => total + row.escanos, 0);
   const regiduriasTotal = regiduria?.regidurias ?? seatTotal;
   const seatSummary = seatParties
     .map((row) => `${displayParty(row.partido)}: ${row.escanos}`)
@@ -242,7 +239,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                   ) : null}
                 </p>
                 <p className="deck">
-                  Con {fmtInt(alcalde.validos)} votos válidos,{" "}
+                  Con {fmtInt(alcalde.votosGanador)} votos válidos,{" "}
                   <strong>{displayParty(alcalde.ganador)}</strong> ganó la
                   alcaldía por {fmtInt(alcalde.margenVotos)} votos (
                   {ppLabel(alcalde.margenPp, alcalde.margenVotos)}) sobre{" "}
@@ -324,9 +321,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                 <p className="stat-value">
                   {ppLabel(alcalde.margenPp, alcalde.margenVotos)}
                 </p>
-                <p className="stat-note">
-                  {fmtInt(alcalde.margenVotos)} votos
-                </p>
+                <p className="stat-note">{fmtInt(alcalde.margenVotos)} votos</p>
               </div>
               <div className="stat">
                 <p className="stat-label">Swing</p>
@@ -337,9 +332,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
               </div>
               <div className="stat">
                 <p className="stat-label">Cuota del ganador</p>
-                <p className="stat-value">
-                  {fmtPct(alcalde.cuotaGanador, 1)}
-                </p>
+                <p className="stat-value">{fmtPct(alcalde.cuotaGanador, 1)}</p>
                 <p className="stat-note">de los votos válidos</p>
               </div>
               <div className="stat">
@@ -349,9 +342,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
               </div>
               <div className="stat">
                 <p className="stat-label">Participación</p>
-                <p className="stat-value">
-                  {fmtPct(alcalde.participacion, 2)}
-                </p>
+                <p className="stat-value">{fmtPct(alcalde.participacion, 2)}</p>
                 <p className="stat-note">
                   {fmtInt(alcalde.electorado)} electores
                 </p>
@@ -403,7 +394,11 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                 highlight={alcalde.ganador}
               />
 
-              <div className="legend" role="group" aria-label="Cómo leer las barras">
+              <div
+                className="legend"
+                role="group"
+                aria-label="Cómo leer las barras"
+              >
                 <span>
                   <i className="legend-win" aria-hidden="true" />
                   El ganador está marcado con 1.º
@@ -416,9 +411,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
               </div>
 
               <details className="disclosure">
-                <summary>
-                  Ver los {partidos.length} partidos con votos
-                </summary>
+                <summary>Ver los {partidos.length} partidos con votos</summary>
                 <div className="table-wrap">
                   <table>
                     <caption className="sr-only">
@@ -469,9 +462,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                               {fmtPct(shareOfValid(row.votos), 2)}
                             </td>
                             <td className="num">
-                              {difference === null
-                                ? "—"
-                                : fmtInt(difference)}
+                              {difference === null ? "—" : fmtInt(difference)}
                             </td>
                           </tr>
                         );
@@ -521,8 +512,8 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                       Ningún partido alcanzó la mayoría absoluta de{" "}
                       <b>{regiduria.mayoria} escaños</b>. El partido con más
                       votos fue <b>{displayParty(regiduria.partidoMasVotos)}</b>
-                      , con {regiduria.escanosPrimero} de{" "}
-                      {regiduria.regidurias} regidurías.
+                      , con {regiduria.escanosPrimero} de {regiduria.regidurias}{" "}
+                      regidurías.
                     </>
                   )}
                 </p>
@@ -576,8 +567,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                         <b>{fmtInt(Math.floor(regiduria.cociente))} votos</b>
                         <p>
                           Votos válidos ÷ {regiduria.regidurias} regidurías.
-                          Valor exacto:{" "}
-                          {fmtDecimal(regiduria.cociente, 2)}.
+                          Valor exacto: {fmtDecimal(regiduria.cociente, 2)}.
                         </p>
                       </div>
                       <div className="threshold">
@@ -668,9 +658,7 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                         </th>
                         <td className="num">{fmtInt(row.votos)}</td>
                         <td className="num">{fmtPct(share, 2)}</td>
-                        <td className="num">
-                          {row.escanosCociente || "—"}
-                        </td>
+                        <td className="num">{row.escanosCociente || "—"}</td>
                         <td className="num">{row.escanosResto || "—"}</td>
                         <td className="num strong">{row.escanos}</td>
                         <td>
@@ -730,12 +718,19 @@ export function CantonPage({ year, cantonSlug }: CantonPageProps) {
                   </tr>
                   <tr>
                     <th scope="row">Regiduría</th>
-                    <td>{fmtInt(regiduria?.electorado ?? alcalde.electorado)}</td>
                     <td>
-                      {fmtInt(regiduria?.votosRecibidos ?? alcalde.votosRecibidos)}
+                      {fmtInt(regiduria?.electorado ?? alcalde.electorado)}
                     </td>
                     <td>
-                      {fmtPct(regiduria?.participacion ?? alcalde.participacion, 2)}
+                      {fmtInt(
+                        regiduria?.votosRecibidos ?? alcalde.votosRecibidos,
+                      )}
+                    </td>
+                    <td>
+                      {fmtPct(
+                        regiduria?.participacion ?? alcalde.participacion,
+                        2,
+                      )}
                     </td>
                     <td>
                       {fmtPct(

@@ -9,11 +9,7 @@ import { TileMap } from "../components/TileMap";
 import { YearSwitch } from "../components/YearSwitch";
 import { elections, type ElectionYear } from "../lib/data";
 import { fmtDecimal, fmtInt, fmtPct, fmtPp } from "../lib/format";
-import {
-  displayName,
-  displayParty,
-  partyClass,
-} from "../lib/parties";
+import { displayName, displayParty, partyClass } from "../lib/parties";
 import { href } from "../lib/routes";
 
 type HomePageProps = {
@@ -81,10 +77,7 @@ export function HomePage({ year }: HomePageProps) {
 
             <div className="election-title">
               <p className="kicker">Municipales · Costa Rica</p>
-              <h1>
-                Resumen nacional de resultados de las elecciones municipales{" "}
-                {year}
-              </h1>
+              <h1>Resumen nacional de las elecciones municipales {year}</h1>
               <p className="deck">
                 Alcaldías, regidurías y participación en los{" "}
                 {data.cantones.length} cantones.
@@ -100,8 +93,8 @@ export function HomePage({ year }: HomePageProps) {
                   Resultados oficiales · <b>TSE</b>
                 </span>
                 <span>
-                  {data.cantones.length} cantones ·{" "}
-                  {fmtInt(totalRegidurias)} regidurías
+                  {data.cantones.length} cantones · {fmtInt(totalRegidurias)}{" "}
+                  regidurías
                 </span>
               </p>
             </div>
@@ -137,7 +130,9 @@ export function HomePage({ year }: HomePageProps) {
             </div>
             <div className="stat">
               <p className="stat-label">Votos válidos</p>
-              <p className="stat-value">{fmtInt(data.validosAlcaldesNacional)}</p>
+              <p className="stat-value">
+                {fmtInt(data.validosAlcaldesNacional)}
+              </p>
               <p className="stat-note">
                 Base de cálculo de alcaldías, márgenes y porcentajes de votos.
               </p>
@@ -412,11 +407,7 @@ export function HomePage({ year }: HomePageProps) {
             </figure>
           </section>
 
-          <section
-            className="section"
-            id="mapa"
-            aria-labelledby="mapa-heading"
-          >
+          <section className="section" id="mapa" aria-labelledby="mapa-heading">
             <div className="section-head">
               <div>
                 <p className="kicker">Mapa municipal · {year}</p>
